@@ -4,28 +4,29 @@
 #include <vector>
 
 using id_type = uint32_t;
-enum node_type {INTERIOR, VERTEX};
+using point = std::vector<double>;
 using node_id_list = std::vector<id_type>;
-
-struct node
-{
-	id_type id;
-	node_type type;
-	double x;
-	double y;
+enum node_type {
+	NIL,
+	INTERIOR, 
+	VERTEX
 };
 
-struct finite_elem
-{
-	id_type id;
-	id_type surface_id;
-	node_id_list nodes;
+struct node {
+    id_type id;
+    node_type type;
+	point coord;
 };
 
-struct surface_finite_elem
-{
-	id_type id;
-	id_type fe_type_id;
-	id_type surface_id;
-	node_id_list nodes;
+struct finite_elem {
+    id_type id;
+    id_type surface_id;
+    node_id_list nodes;
+};
+
+struct surface_finite_elem {
+    id_type id;
+    id_type fe_type_id;
+    id_type surface_id;
+    node_id_list nodes;
 };

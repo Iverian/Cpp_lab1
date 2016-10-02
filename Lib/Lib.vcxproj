@@ -110,10 +110,16 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="ANEU_mesh_loader.h" />
+    <ClInclude Include="exceptions.h" />
     <ClInclude Include="helper_class.h" />
+    <ClInclude Include="mesh.h" />
+    <ClInclude Include="mesh_loader.h" />
     <ClInclude Include="utility.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="ANEU_mesh_loader.cpp" />
+    <ClCompile Include="mesh.cpp" />
     <ClCompile Include="utility.cpp" />
   </ItemGroup>
   <ItemGroup>
