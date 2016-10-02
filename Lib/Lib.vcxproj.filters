@@ -27,4 +27,12 @@
       <Filter>Файлы исходного кода</Filter>
     </ClCompile>
   </ItemGroup>
+  <ItemGroup>
+    <Image Include="задание1.jpg">
+      <Filter>Файлы ресурсов</Filter>
+    </Image>
+    <Image Include="задание2.jpg">
+      <Filter>Файлы ресурсов</Filter>
+    </Image>
+  </ItemGroup>
 </Project>

@@ -7,7 +7,7 @@ using id_type = uint32_t;
 enum node_type {INTERIOR, VERTEX};
 using node_id_list = std::vector<id_type>;
 
-struct Node
+struct node
 {
 	id_type id;
 	node_type type;
@@ -15,17 +15,17 @@ struct Node
 	double y;
 };
 
-struct Finite_elem
+struct finite_elem
 {
 	id_type id;
 	id_type surface_id;
 	node_id_list nodes;
 };
 
-struct Surface_finite_elem
+struct surface_finite_elem
 {
 	id_type id;
-	id_type FE_type_id;
+	id_type fe_type_id;
 	id_type surface_id;
 	node_id_list nodes;
 };
