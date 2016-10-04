@@ -27,6 +27,7 @@ mesh ANEU_mesh_loader::load_mesh(const std::string& p_aneu_filename)
         input.type = VERTEX;
         retval.get_node_container().push_back(input);
     }
+	retval.get_node_container().shrink_to_fit();
 
     mesh_file >> fe_count >> nodes_in_fe;
     for (uint32_t id = 1; id <= fe_count; ++id) {
@@ -40,6 +41,7 @@ mesh ANEU_mesh_loader::load_mesh(const std::string& p_aneu_filename)
         input.id = id;
         retval.get_fe_container().push_back(input);
     }
+	retval.get_fe_container().shrink_to_fit();
 
     mesh_file >> sfe_count >> nodes_in_sfe;
     for (uint32_t id = 1; id <= sfe_count; ++id) {
@@ -54,6 +56,7 @@ mesh ANEU_mesh_loader::load_mesh(const std::string& p_aneu_filename)
 		//не знаю, что сюда писать
 		//input.fe_type_id = 1;
     }
+	retval.get_sfe_container().shrink_to_fit();
 
     return move(retval);
 }
