@@ -42,7 +42,7 @@ surface_finite_elem& mesh::get_sfe(const id_type& p_index)
     return m_sfe_container.at(p_index - 1);
 }
 
-default_container<finite_elem&> mesh::get_fe_by_three_nodes(const std::array<const node&, 3>& p_nodes)
+default_container<finite_elem&> mesh::get_fe_by_three_nodes(const std::array<const id_type&, 3>& p_nodes)
 {
     default_container<finite_elem&> retval;
     for (auto i = m_fe_container.begin(); i != m_fe_container.end();) {

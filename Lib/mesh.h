@@ -19,7 +19,7 @@ public:
     finite_elem& get_fe(const id_type& p_index);
     surface_finite_elem& get_sfe(const id_type& p_index);
 
-    default_container<finite_elem&> get_fe_by_three_nodes(const std::array<const node&, 3>& p_nodes);
+    default_container<finite_elem&> get_fe_by_three_nodes(const std::array<const id_type&, 3>& p_nodes);
 
 private:
     default_container<node> m_node_container;
