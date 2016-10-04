@@ -38,7 +38,7 @@ mesh ANEU_mesh_loader::load_mesh(const std::string& p_aneu_filename)
             mesh_file >> input.nodes.at(i);
             retval.get_node(input.nodes.at(i)).type = INTERIOR;
         }
-        input.id = id;
+        input.id = id;		
         retval.get_fe_container().push_back(input);
     }
 	retval.get_fe_container().shrink_to_fit();
