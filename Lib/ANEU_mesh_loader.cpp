@@ -30,7 +30,7 @@ mesh ANEU_mesh_loader::load_mesh(const std::string& p_aneu_filename)
 	retval.get_node_container().shrink_to_fit();
 
     mesh_file >> fe_count >> nodes_in_fe;
-    for (uint32_t id = 1; id <= fe_count; ++id) {
+    for (id_type id = 1; id <= fe_count; ++id) {
         finite_elem input;
         mesh_file >> input.surface_id;
         input.nodes.resize(nodes_in_fe);
@@ -44,7 +44,7 @@ mesh ANEU_mesh_loader::load_mesh(const std::string& p_aneu_filename)
 	retval.get_fe_container().shrink_to_fit();
 
     mesh_file >> sfe_count >> nodes_in_sfe;
-    for (uint32_t id = 1; id <= sfe_count; ++id) {
+    for (id_type id = 1; id <= sfe_count; ++id) {
         surface_finite_elem input;
         mesh_file >> input.surface_id;
         input.nodes.resize(nodes_in_sfe);

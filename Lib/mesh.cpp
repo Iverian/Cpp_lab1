@@ -62,5 +62,5 @@ default_container<finite_elem&> mesh::get_fe_by_three_nodes(const std::array<con
         }
         i = j;
     }
-    return retval;
+    return move(retval);
 }
