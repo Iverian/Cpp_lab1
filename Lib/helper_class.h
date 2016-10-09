@@ -6,6 +6,7 @@
 using id_type = uint32_t;
 using point = std::vector<double>;
 using node_id_list = std::vector<id_type>;
+
 enum node_type {
 	NIL,
 	INTERIOR, 
@@ -26,7 +27,6 @@ struct finite_elem {
 
 struct surface_finite_elem {
     id_type id;
-    id_type fe_type_id;
     id_type surface_id;
     node_id_list nodes;
 };
