@@ -1,4 +1,7 @@
+#define _VARIANT_CPP
+
 #include "variant.h"
+
 #include <algorithm>
 
 using namespace std;

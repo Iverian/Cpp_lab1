@@ -5,12 +5,15 @@
 #include <iostream>
 #include <list>
 #include <vector>
+#include <clocale>
+
 #define FILENAME "in.txt"
 
 using namespace std;
 
 int main()
 {
+	setlocale(LC_ALL, "rus");
     cout << "загадай число" << endl;
     int a;
     cin >> a;
