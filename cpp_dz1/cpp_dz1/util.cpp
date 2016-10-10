@@ -19,7 +19,7 @@ ifstream create_file(const string &filename)
 }
 
 template <class T>
-T create_cont(ifstream &s)
+T create_cont(ifstream &&s)
 {
 	T cont(COUNT);
 	istream_iterator<int> iter(s);

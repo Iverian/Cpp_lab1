@@ -5,4 +5,4 @@
 //#define VAR3
 
 template <class T>
-T change_cont(T& c);
+T change_cont(T&& c);
