@@ -6,6 +6,7 @@
 #include <list>
 #include <vector>
 #include <clocale>
+#include <cstdlib>
 
 #define FILENAME "in.txt"
 
@@ -30,5 +31,6 @@ int main()
     default:
         break;
     }
+	system("pause");
     return 0;
 }

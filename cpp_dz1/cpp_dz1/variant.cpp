@@ -5,7 +5,8 @@
 #include <algorithm>
 
 using namespace std;
-template <class T>
+
+template <class Value, class T>
 T add_sum(T&& c);
 
 #ifdef VAR1
@@ -13,23 +14,35 @@ T add_sum(T&& c);
 template <class T>
 T change_cont(T&& c)
 {
-    int first = 0, last = 0, counter = 1;
+    typename T::value_type first;
+	auto last = first;
+	cout << last << endl;
+	int counter = 1;
     for_each(c.begin(), c.end(), [&first, &last](int a) {if (a < 0) { if (first == 0) first = a; last = a; } });
     for_each(c.begin(), c.end(), [ sum = 2 * (first + last), &counter ](int& a) {if (counter % 3 == 0)a *= sum; ++counter; });
-    return add_sum(c);
+    return add_sum</*typename*/ T::value_type>(move(c));
 }
 
 #elif defined(VAR2)
+
+template <class T>
+T change_cont(T&& c)
+{
+	auto x = *find_if(c.rbegin(), c.rend(), [](/*typename*/ T::value_type a) {return a < T::value_type(); }) / 2;
+	for_each(c.begin(), c.end(), [x](/*typename*/ T::value_type& a) { a += x; });
+	return add_sum</*typename*/ T::value_type>(move(c));
+}
 
 #else
 
 #endif
 
-template <class T>
+template <class Value, class T>
 T add_sum(T&& c)
 {
-    int sum = 0, sum_m = 0;
-    for_each(c.begin(), c.end(), [&sum, &sum_m](int a) {sum += a; sum_m += abs(a); });
+	auto sum = Value();
+	auto sum_m = sum;
+    for_each(c.begin(), c.end(), [&sum, &sum_m](Value a) {sum += a; sum_m += abs(a); });
     c.push_back(sum);
     c.push_back(sum_m / c.size());
     return c;
