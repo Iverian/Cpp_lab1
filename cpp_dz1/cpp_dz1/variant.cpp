@@ -16,7 +16,6 @@ T change_cont(T&& c)
 {
     typename T::value_type first;
 	auto last = first;
-	cout << last << endl;
 	int counter = 1;
     for_each(c.begin(), c.end(), [&first, &last](int a) {if (a < 0) { if (first == 0) first = a; last = a; } });
     for_each(c.begin(), c.end(), [ sum = 2 * (first + last), &counter ](int& a) {if (counter % 3 == 0)a *= sum; ++counter; });
