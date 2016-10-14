@@ -53,8 +53,6 @@ mesh ANEU_mesh_loader::load_mesh(const std::string& p_aneu_filename)
             retval.get_node(input.nodes.at(i)).type = VERTEX;
         }
 		input.id = id;
-		//не знаю, что сюда писать
-		//input.fe_type_id = 1;
     }
 	retval.get_sfe_container().shrink_to_fit();
 
