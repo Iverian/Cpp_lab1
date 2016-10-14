@@ -23,6 +23,7 @@ signals:
 	void emit_selectQuery(QSqlQueryModel* selectModel);
 	void emit_refreshCurTable(QSqlQueryModel* tableModel);
 	void emit_refreshTableList(QStringListModel* listModel, QString selectedTable);
+	void emit_errMsg(const QString& error);
 private:
     QSqlDatabase* m_database;
 	QString m_curTable;
