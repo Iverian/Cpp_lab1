@@ -113,7 +113,7 @@ def_cont<id_type> mesh::get_sfe_nodes_by_surface_id(const id_type& p_id)
     return move(retval);
 }
 
-def_cont<set<id_type>> mesh::get_n_cont()
+def_cont<set<id_type>> mesh::get_cont_neighs()
 {
     def_cont<set<id_type>> retval;
     retval.reserve(m_node_cont.size());

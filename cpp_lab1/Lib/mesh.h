@@ -25,7 +25,7 @@ public:
 	def_cont<id_type> get_fe_by_edge(const std::array<const id_type&, 2>& p_edge);
 	def_cont<id_type> get_sfe_by_surface_id(const id_type& p_id);
 	def_cont<id_type> get_sfe_nodes_by_surface_id(const id_type &p_id);
-	def_cont<std::set<id_type>> get_n_cont();
+	def_cont<std::set<id_type>> get_cont_neighs();
 private:
     def_cont<node> m_node_cont;
     def_cont<finite_elem> m_fe_cont;
