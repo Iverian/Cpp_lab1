@@ -11,7 +11,7 @@ class Abstract_database {
 public:
     explicit Abstract_database();
     explicit Abstract_database(const std::string& file_name);
-    virtual ~Abstract_database() = 0;
+	virtual ~Abstract_database();;
 
     void add_record(const Record& a);
     Record get_record(const id_type& id);
@@ -41,6 +41,11 @@ template <class Record, class SearchStruct>
 Abstract_database<Record, SearchStruct>::Abstract_database(const std::string& file_name)
     : _filename(file_name)
     , _search()
+{
+}
+
+template <class Record, class SearchStruct>
+Abstract_database<Record, SearchStruct>::~Abstract_database()
 {
 }
 
