@@ -8,6 +8,8 @@ using point = std::vector<double>;
 using node_id_list = std::vector<id_type>;
 
 static constexpr id_type nil = 0;
+template <class T>
+using def_cont = std::vector<T>;
 
 enum node_type {
 	NIL,

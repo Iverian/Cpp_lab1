@@ -5,10 +5,9 @@
 #include <list>
 #include <vector>
 #include <set>
+#include <array>
 
 
-template <class T>
-using def_cont = std::vector<T>;
 
 class mesh {
 public:
@@ -26,6 +25,7 @@ public:
 	def_cont<id_type> get_sfe_by_surface_id(const id_type& p_id);
 	def_cont<id_type> get_sfe_nodes_by_surface_id(const id_type &p_id);
 	def_cont<std::set<id_type>> get_cont_neighs();
+	mesh& convert_to_square_type();
 private:
     def_cont<node> m_node_cont;
     def_cont<finite_elem> m_fe_cont;

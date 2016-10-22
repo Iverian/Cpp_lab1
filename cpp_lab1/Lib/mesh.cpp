@@ -1,4 +1,5 @@
 #include "mesh.h"
+#include "utility.h"
 
 #include <algorithm>
 #include <array>
@@ -136,4 +137,16 @@ def_cont<set<id_type>> mesh::get_cont_neighs()
             }
     }
     return move(retval);
+}
+
+mesh& mesh::convert_to_square_type()
+{
+	id_type starter_id = m_node_cont.back().id + 1;
+	set<node> temp_node_cont;
+	for (auto i = m_fe_cont.begin(); i != m_fe_cont.end(); ++i) {
+		for (auto j = i + 1; j != m_fe_cont.end(); ++j) {
+
+		}
+	}
+	return *this;
 }
