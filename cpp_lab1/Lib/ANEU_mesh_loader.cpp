@@ -19,42 +19,42 @@ mesh ANEU_mesh_loader::load_mesh(const std::string& p_aneu_filename)
 
     mesh_file >> node_count >> dots_in_node;
     for (id_type id = 1; id <= node_count; ++id) {
-        node input;
+        helper::node input;
         input.coord.resize(dots_in_node);
         for (uint32_t i = 0; i < dots_in_node; ++i)
             mesh_file >> input.coord.at(i);
         input.id = id;
         input.type = VERTEX;
-        retval.get_node_container().push_back(input);
+        retval.node_cont().push_back(input);
     }
-	retval.get_node_container().shrink_to_fit();
+    retval.node_cont().shrink_to_fit();
 
     mesh_file >> fe_count >> nodes_in_fe;
     for (id_type id = 1; id <= fe_count; ++id) {
-        finite_elem input;
+        helper::finite_elem input;
         mesh_file >> input.surface_id;
         input.nodes.resize(nodes_in_fe);
         for (uint32_t i = 0; i < nodes_in_fe; ++i) {
             mesh_file >> input.nodes.at(i);
-            retval.get_node(input.nodes.at(i)).type = INTERIOR;
+            retval.node(input.nodes.at(i)).type = INTERIOR;
         }
-        input.id = id;		
-        retval.get_fe_container().push_back(input);
+        input.id = id;
+        retval.fe_cont().push_back(input);
     }
-	retval.get_fe_container().shrink_to_fit();
+    retval.fe_cont().shrink_to_fit();
 
     mesh_file >> sfe_count >> nodes_in_sfe;
     for (id_type id = 1; id <= sfe_count; ++id) {
-        surface_finite_elem input;
+        helper::surface_finite_elem input;
         mesh_file >> input.surface_id;
         input.nodes.resize(nodes_in_sfe);
         for (uint32_t i = 0; i < nodes_in_sfe; ++i) {
             mesh_file >> input.nodes.at(i);
-            retval.get_node(input.nodes.at(i)).type = VERTEX;
+            retval.node(input.nodes.at(i)).type = VERTEX;
         }
-		input.id = id;
+        input.id = id;
     }
-	retval.get_sfe_container().shrink_to_fit();
+    retval.sfe_cont().shrink_to_fit();
 
     return move(retval);
 }

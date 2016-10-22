@@ -12,15 +12,22 @@ template <class T>
 using def_cont = std::vector<T>;
 
 enum node_type {
-	NIL,
-	INTERIOR, 
-	VERTEX
+    NIL,
+    INTERIOR,
+    VERTEX
 };
 
+namespace helper {
 struct node {
     id_type id;
     node_type type;
-	point coord;
+    point coord;
+    node(id_type p_id = 0, node_type p_type = NIL, point p_coord = point())
+        : id(p_id)
+        , type(p_type)
+        , coord(p_coord)
+    {
+    }
 };
 
 struct finite_elem {
@@ -34,3 +41,4 @@ struct surface_finite_elem {
     id_type surface_id;
     node_id_list nodes;
 };
+}

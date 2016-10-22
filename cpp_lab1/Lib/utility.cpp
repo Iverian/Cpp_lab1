@@ -1,61 +1,42 @@
 #include "utility.h"
 
-#include <stdexcept>
-#include <iostream>
 #include <fstream>
+#include <stdexcept>
+
+#define MAGIC_NUMBER 1000000
+#define ACCURACY 1e-9
 
 using namespace std;
 
-uint32_t convert_float_to_uint32_t(double x) {
-	x *= 1000000;
-	x += 1000000;
-	return x;
-}
-
-uint32_t kutirkin_tech(const uint32_t & first, const uint32_t & second) {
-	return (first + second + 1) * (first + second + 2) / 2;
-}
-
-uint32_t kutirkin_tech(const double& first, const double& second) {
-	return kutirkin_tech(convert_float_to_uint32_t(first), convert_float_to_uint32_t(second));
-}
-
-uint32_t kutirkin_tech(const std::vector<double>& x)
+point get_center(const point& x, const point& y)
 {
-	if (x.size() < 2)
-		throw std::runtime_error("This isn't supposed to happen");
-	uint32_t retval = 0;
-	auto iter = x.begin();
-	retval = kutirkin_tech(*iter, *(iter + 1));
-	iter += 2;
-	for (; iter != x.end(); ++iter)
-		retval = kutirkin_tech(retval, convert_float_to_uint32_t(*iter));
-	return retval;
+    point retval;
+    if (x.size() != y.size())
+        throw std::runtime_error("This isn't supposed to happen");
+    for (size_t i = 0; i < x.size(); i++)
+        retval.push_back((x[i] + y[i]) / 2);
+    return move(retval);
 }
 
-std::vector<double> get_center(const std::vector<double>& x, const std::vector<double>& y)
+bool equal(const point& x, const point& y)
 {
-	std::vector<double> retval;
-	if (x.size() != y.size())
-		throw std::runtime_error("This isn't supposed to happen");
-	for (int i = 0; i < x.size(); i++) {
-		retval.push_back((x[i] + y[i]) / 2);
-	}
-	return retval;
+    return std::equal(x.begin(), x.end(), y.begin(), y.end(), [](double a, double b) { return std::fabs(a - b) < ACCURACY; });
 }
 
-
-bool operator<(const node & lhs, const node & rhs) {
-	bool retval = true;
-	if (lhs.coord.size() != rhs.coord.size())
-		throw std::runtime_error("This isn't supposed to happen");
-	return kutirkin_tech(lhs.coord) < kutirkin_tech(rhs.coord);
-}
-
-void print_to_file(const std::string& file_name, const def_cont<id_type>& vec)
+void print_to_file(const std::string& file_name, const def_cont<id_type>& cont)
 {
-	ofstream f;
-	f.open(file_name);
-	for (int i = 0; i < vec.size(); ++i)
-		f << vec[i];
+    ofstream f(file_name);
+    for (auto& i : cont)
+        f << i << endl;
+}
+
+void print_to_file(const std::string& file_name, const def_cont<std::set<id_type>>& cont)
+{
+    ofstream f(file_name);
+    for (size_t size = cont.size(), i = 0; i != size; ++i) {
+        f << i + 1 << " : ";
+        for (auto& j : cont[i])
+            f << j << " ";
+        f << endl;
+    }
 }

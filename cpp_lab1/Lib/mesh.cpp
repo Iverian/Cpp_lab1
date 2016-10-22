@@ -2,9 +2,9 @@
 #include "utility.h"
 
 #include <algorithm>
-#include <array>
 
-using namespace std;
+//using namespace std;
+//using namespace helper;
 
 template <class Function, class Node_type>
 def_cont<id_type> find_temp(def_cont<Node_type>& cont, Function&& lambda);
@@ -16,42 +16,42 @@ mesh::mesh()
 {
 }
 
-def_cont<node>& mesh::get_node_container()
+def_cont<helper::node>& mesh::node_cont()
 {
     return m_node_cont;
 }
 
-def_cont<finite_elem>& mesh::get_fe_container()
+def_cont<helper::finite_elem>& mesh::fe_cont()
 {
     return m_fe_cont;
 }
 
-def_cont<surface_finite_elem>& mesh::get_sfe_container()
+def_cont<helper::surface_finite_elem>& mesh::sfe_cont()
 {
     return m_sfe_cont;
 }
 
-node& mesh::get_node(const id_type& p_index)
+helper::node& mesh::node(const id_type& p_index)
 {
     return m_node_cont.at(p_index - 1);
 }
 
-finite_elem& mesh::get_fe(const id_type& p_index)
+helper::finite_elem& mesh::fe(const id_type& p_index)
 {
     return m_fe_cont.at(p_index - 1);
 }
 
-surface_finite_elem& mesh::get_sfe(const id_type& p_index)
+helper::surface_finite_elem& mesh::sfe(const id_type& p_index)
 {
     return m_sfe_cont.at(p_index - 1);
 }
 
 template <class Function, class Node_type>
-def_cont<id_type> find_temp(def_cont<Node_type>& cont, Function&& lambda)
+def_cont<id_type> find_temp(def_cont<Node_type>& cont, Function&& predicate)
 {
     def_cont<id_type> retval;
     for (auto i = cont.begin(); i != cont.end();) {
-        auto j = find_if(i, cont.end(), lambda);
+        auto j = find_if(i, cont.end(), predicate);
         if (j != cont.end()) {
             retval.push_back(j->id);
             ++j;
@@ -61,13 +61,13 @@ def_cont<id_type> find_temp(def_cont<Node_type>& cont, Function&& lambda)
     return move(retval);
 }
 
-def_cont<id_type> mesh::get_fe_by_three_nodes(const std::array<const id_type&, 3>& p_nodes)
+def_cont<id_type> mesh::get_fe_by_three_nodes(const std::array<id_type, 3>& p_nodes)
 {
     return find_temp(m_fe_cont,
-        [&p_nodes](const finite_elem& p_elem) -> auto {
+        [&p_nodes](const helper::finite_elem& p_elem) -> auto {
             auto res = true;
             for (auto k = p_nodes.begin(); res && k != p_nodes.end(); ++k) {
-                auto l = find(p_elem.nodes.begin(), p_elem.nodes.end(), *k);
+                auto l = std::find(p_elem.nodes.begin(), p_elem.nodes.end(), *k);
                 if (l == p_elem.nodes.end())
                     res = false;
             }
@@ -75,13 +75,13 @@ def_cont<id_type> mesh::get_fe_by_three_nodes(const std::array<const id_type&, 3
         });
 }
 
-def_cont<id_type> mesh::get_fe_by_edge(const std::array<const id_type&, 2>& p_edge)
+def_cont<id_type> mesh::get_fe_by_edge(const std::array<id_type, 2>& p_edge)
 {
     return find_temp(m_fe_cont,
-        [&p_edge](const finite_elem& p_elem) {
+        [&p_edge](const helper::finite_elem& p_elem) {
             auto res = true;
             for (auto& k : p_edge) {
-                auto l = find(p_elem.nodes.begin(), p_elem.nodes.end(), k);
+                auto l = std::find(p_elem.nodes.begin(), p_elem.nodes.end(), k);
                 if (l == p_elem.nodes.end()) {
                     res = false;
                     break;
@@ -94,7 +94,7 @@ def_cont<id_type> mesh::get_fe_by_edge(const std::array<const id_type&, 2>& p_ed
 def_cont<id_type> mesh::get_sfe_by_surface_id(const id_type& p_id)
 {
     return find_temp(m_sfe_cont,
-        [p_id](const surface_finite_elem& p_elem) {
+        [p_id](const helper::surface_finite_elem& p_elem) {
             return p_id == p_elem.surface_id;
         });
 }
@@ -103,7 +103,7 @@ def_cont<id_type> mesh::get_sfe_nodes_by_surface_id(const id_type& p_id)
 {
     def_cont<id_type> retval;
     for (auto i = m_sfe_cont.begin(); i != m_sfe_cont.end();) {
-        auto j = find_if(i, m_sfe_cont.end(), [p_id](const surface_finite_elem& p_elem) { return p_id == p_elem.surface_id; });
+        auto j = std::find_if(i, m_sfe_cont.end(), [p_id](const helper::surface_finite_elem& p_elem) { return p_id == p_elem.surface_id; });
         if (j != m_sfe_cont.end()) {
             for (auto& k : j->nodes)
                 retval.push_back(k);
@@ -114,10 +114,10 @@ def_cont<id_type> mesh::get_sfe_nodes_by_surface_id(const id_type& p_id)
     return move(retval);
 }
 
-def_cont<set<id_type>> mesh::get_cont_neighs()
+def_cont<std::set<id_type>> mesh::get_cont_neighs()
 {
-    def_cont<set<id_type>> retval;
-    retval.reserve(m_node_cont.size());
+    def_cont<std::set<id_type>> retval;
+    retval.resize(m_node_cont.size());
     for (auto& i : m_fe_cont) {
         auto node_size = i.nodes.size();
         for (size_t j = 0; j != node_size; ++j)
@@ -125,6 +125,7 @@ def_cont<set<id_type>> mesh::get_cont_neighs()
                 if (k == j)
                     continue;
                 retval.at(i.nodes.at(j) - 1).insert(i.nodes.at(k));
+				retval.at(i.nodes.at(k) - 1).insert(i.nodes.at(j));
             }
     }
     for (auto& i : m_sfe_cont) {
@@ -134,6 +135,7 @@ def_cont<set<id_type>> mesh::get_cont_neighs()
                 if (k == j)
                     continue;
                 retval.at(i.nodes.at(j) - 1).insert(i.nodes.at(k));
+				retval.at(i.nodes.at(k) - 1).insert(i.nodes.at(j));
             }
     }
     return move(retval);
@@ -141,12 +143,18 @@ def_cont<set<id_type>> mesh::get_cont_neighs()
 
 mesh& mesh::convert_to_square_type()
 {
-	id_type starter_id = m_node_cont.back().id + 1;
-	set<node> temp_node_cont;
-	for (auto i = m_fe_cont.begin(); i != m_fe_cont.end(); ++i) {
-		for (auto j = i + 1; j != m_fe_cont.end(); ++j) {
-
-		}
-	}
-	return *this;
+    auto cur_id = m_node_cont.back().id + 1;
+    def_cont<helper::node> new_nodes;
+    for (auto i = m_fe_cont.begin(); i != m_fe_cont.end(); ++i) {
+        for (auto j = i->nodes.begin(); j != i->nodes.end(); ++j) {
+            for (auto k = j + 1; k != i->nodes.end(); ++k) {
+                auto center = get_center(node(*j).coord, node(*k).coord);
+                if (find_if(new_nodes.begin(), new_nodes.end(), [&center](const helper::node& x) { return equal(x.coord, center); }) == new_nodes.end())
+                    new_nodes.push_back({ cur_id++, INTERIOR, center });
+            }
+        }
+    }
+	for (auto& i : new_nodes)
+		m_node_cont.push_back(i);
+    return *this;
 }
