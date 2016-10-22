@@ -20,7 +20,7 @@ struct search_struct_traits {
 	template <int Param>
 	using linked_val = typename link<Param>::value;
 
-    virtual ~search_struct_traits() = 0;
+    virtual ~search_struct_traits() {};
     virtual void index_record(const id_type& pos, const Record& x) = 0;
     virtual void delete_record(const Record& x) = 0;
     template <int Param>

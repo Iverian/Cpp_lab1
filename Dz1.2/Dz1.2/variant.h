@@ -80,16 +80,6 @@ class Database : public DatabaseBase<Record, Search_struct>
 
 #elif defined(_VAR_3)
 
-#else
-enum search_fields { ID,
-    NAME };
-def_link(search_fields::ID, int);
-def_link(search_fields::NAME, char*);
-struct Record {
-};
-struct Search_struct : search_struct_traits<Record> {
-};
-
 #endif
 
 std::ostream& operator<<(std::ostream& os, const Record& x);
