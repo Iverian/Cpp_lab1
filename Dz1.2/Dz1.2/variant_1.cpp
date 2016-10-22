@@ -14,5 +14,13 @@ Search_struct::~Search_struct()
 {
 }
 
+void Database::bin_to_txt(const std::string& file_name)
+{
+}
+
+std::ostream& operator<<(std::ostream& os, const Record& x)
+{
+	return os;
+}
 
 #endif
