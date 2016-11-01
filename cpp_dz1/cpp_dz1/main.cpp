@@ -15,7 +15,7 @@ using namespace std;
 int main()
 {
 	setlocale(LC_ALL, "rus");
-    cout << "загадай число" << endl;
+    cout << "загадай число: " << endl;
     int a;
     cin >> a;
     switch (a % 3) {
