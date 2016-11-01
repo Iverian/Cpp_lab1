@@ -5,8 +5,15 @@
 
 using namespace std;
 
+unique_ptr<ANEU_mesh_loader> ANEU_mesh_loader::_instance(new ANEU_mesh_loader());
+
 ANEU_mesh_loader::ANEU_mesh_loader()
 {
+}
+
+ANEU_mesh_loader& ANEU_mesh_loader::instance()
+{
+	return *_instance;
 }
 
 mesh ANEU_mesh_loader::load_mesh(const std::string& p_aneu_filename)

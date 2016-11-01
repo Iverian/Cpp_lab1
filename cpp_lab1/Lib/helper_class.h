@@ -22,12 +22,7 @@ struct node {
     id_type id;
     node_type type;
     point coord;
-    node(id_type p_id = 0, node_type p_type = NIL, point p_coord = point())
-        : id(p_id)
-        , type(p_type)
-        , coord(p_coord)
-    {
-    }
+	node(id_type p_id = 0, node_type p_type = NIL, point p_coord = point());
 };
 
 struct finite_elem {

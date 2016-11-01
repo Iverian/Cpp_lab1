@@ -119,6 +119,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ANEU_mesh_loader.cpp" />
+    <ClCompile Include="helper_class.cpp" />
     <ClCompile Include="mesh.cpp" />
     <ClCompile Include="utility.cpp" />
   </ItemGroup>

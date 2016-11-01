@@ -10,8 +10,7 @@ public:
 
 TEST_F(ANEU_mesh_loader_test, load_mesh_test_1)
 {
-	ANEU_mesh_loader loader;
-	loader.load_mesh(aneu_test_file);
+	ANEU_mesh_loader::instance().load_mesh(aneu_test_file);
 }
 
 int main(int argc, char* argv[])

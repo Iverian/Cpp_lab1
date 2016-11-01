@@ -44,6 +44,9 @@
     <ClCompile Include="mesh.cpp">
       <Filter>Файлы исходного кода</Filter>
     </ClCompile>
+    <ClCompile Include="helper_class.cpp">
+      <Filter>Файлы исходного кода</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="задание1.jpg">
