@@ -34,6 +34,15 @@ T change_cont(T&& c)
 
 #else
 
+template <class T>
+T change_cont(T&& c)
+{
+	typename T::value_type s = T::value_type();
+	for_each(c.begin(), c.end(), [&s](T::value_type a) {s = +a; });
+	auto srf = s / c.size();
+	for_each(c.begin(), c.end(), [&srf](T::value_type& a) {if (a == 0) a = srf; });
+	return add_sum<T::value_type>(move(c));
+}
 #endif
 
 template <class Value, class T>

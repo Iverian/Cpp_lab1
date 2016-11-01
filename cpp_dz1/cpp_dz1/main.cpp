@@ -31,6 +31,7 @@ int main()
     default:
         break;
     }
+	cout << endl;
 	system("pause");
     return 0;
 }
