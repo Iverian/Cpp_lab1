@@ -14,9 +14,9 @@ T add_sum(T&& c);
 template <class T>
 T change_cont(T&& c)
 {
-    typename T::value_type first = T::value_type();
+    auto first = T::value_type();
     auto last = first;
-    int counter = 1;
+    auto counter = 1;
     for_each(c.begin(), c.end(), [&first, &last](T::value_type a) {if (a < 0) { if (first == 0) first = a; last = a; } });
     for_each(c.begin(), c.end(), [ sum = 2 * (first + last), &counter ](T::value_type & a) {if (counter % 3 == 0) a *= sum; ++counter; });
     return add_sum<T::value_type>(move(c));
