@@ -1,10 +1,10 @@
-#include "Nevajno_kak.h"
+#include "MyMainWindow.h"
 
 #include <QSqlError>
 #include <QSqlTableModel>
 #include <QStringListModel>
 
-Nevajno_kak::Nevajno_kak(QWidget* parent)
+MyMainWindow::MyMainWindow(QWidget* parent)
     : QMainWindow(parent)
 {
     ui.setupUi(this);
@@ -12,6 +12,7 @@ Nevajno_kak::Nevajno_kak(QWidget* parent)
     db = QSqlDatabase::addDatabase("QSQLITE");
     db.setDatabaseName("file");
     db.open();
+
     ui.listView->setModel(new QStringListModel(db.tables()));
 	ui.listView->setEditTriggers(QAbstractItemView::NoEditTriggers);
 
@@ -20,7 +21,7 @@ Nevajno_kak::Nevajno_kak(QWidget* parent)
     connect(ui.listView->selectionModel(), SIGNAL(selectionChanged(const QItemSelection&, const QItemSelection&)), this, SLOT(table_chose()));
 }
 
-void Nevajno_kak::button() const
+void MyMainWindow::button() const
 {
     auto executedQuery = db.exec(ui.lineEdit->text());
     auto queryError = executedQuery.lastError();
@@ -39,7 +40,7 @@ void Nevajno_kak::button() const
     }
 }
 
-void Nevajno_kak::table_chose() const
+void MyMainWindow::table_chose() const
 {
     auto qr = ui.listView->selectionModel()->currentIndex().data().toString();
 	auto model = new QSqlQueryModel();

@@ -7,7 +7,7 @@ SelectView::SelectView(QWidget *parent)
 	ui.setupUi(this);
 }
 
-void SelectView::get_msg(QSqlQuery x)
+void SelectView::get_msg(const QSqlQuery& x)
 {
 	auto smth = new QSqlQueryModel();
 	smth->setQuery(x);

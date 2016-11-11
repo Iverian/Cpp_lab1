@@ -1,18 +1,15 @@
 #pragma once
 
-#include <QWidget>
-#include <ui_SelectView.h>
 #include <QSqlQuery>
+#include <ui_SelectView.h>
 
-class SelectView : public QWidget
-{
-	Q_OBJECT
-
+class SelectView : public QWidget {
+    Q_OBJECT
 public:
-	SelectView(QWidget *parent = Q_NULLPTR);
-	public slots:
-	void get_msg(QSqlQuery x);
+    SelectView(QWidget* parent = Q_NULLPTR);
+public slots:
+    void get_msg(const QSqlQuery& x);
 
 private:
-	Ui::SelectView ui;
+    Ui::SelectView ui;
 };
