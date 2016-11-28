@@ -5,11 +5,16 @@
 
 MyMainWindow::MyMainWindow(QWidget* parent)
     : QMainWindow(parent)
-    , db(QSqlDatabase::addDatabase("QSQLITE"))
 {
 	ui.setupUi(this);
-    db.setDatabaseName("my.db");
+
+	db = QSqlDatabase::addDatabase("QPSQL");
+	db.setHostName("195.19.32.74");
+	db.setUserName("student");
+	db.setPassword("bmstu");
+    db.setDatabaseName("fn1131_2016");
 	db.open();
+
 	ui.listView->setModel(new QStringListModel(db.tables()));
 }
 
