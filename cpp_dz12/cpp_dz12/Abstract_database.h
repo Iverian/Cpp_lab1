@@ -1,24 +1,25 @@
 #pragma once
 
-#include "utility.h"
 #include "search_struct_traits.h"
+#include "utility.h"
 
 #include <fstream>
 #include <map>
 #include <vector>
 
 template <class Record, class SearchStruct>
-class Abstract_database {
+class abstract_database {
 public:
-    explicit Abstract_database();
-    explicit Abstract_database(const std::string& file_name);
-	virtual ~Abstract_database();;
+    explicit abstract_database();
+    explicit abstract_database(const std::string& file_name);
+    virtual ~abstract_database();
 
+    const std::string& filename() const;
+    id_type size() const;
     void add_record(const Record& a);
     Record get_record(const id_type& id) const;
     void delete_record(const id_type& pos);
     void change_record(const id_type& pos, const Record& a);
-	size_t size() const;
     virtual void bin_to_txt(const std::string& txtfile_name) = 0;
 
     template <int id>
@@ -32,26 +33,26 @@ private:
 };
 
 template <class Record, class SearchStruct>
-Abstract_database<Record, SearchStruct>::Abstract_database()
+abstract_database<Record, SearchStruct>::abstract_database()
     : _filename()
     , _search()
 {
 }
 
 template <class Record, class SearchStruct>
-Abstract_database<Record, SearchStruct>::Abstract_database(const std::string& file_name)
+abstract_database<Record, SearchStruct>::abstract_database(const std::string& file_name)
     : _filename(file_name)
     , _search()
 {
 }
 
 template <class Record, class SearchStruct>
-Abstract_database<Record, SearchStruct>::~Abstract_database()
+abstract_database<Record, SearchStruct>::~abstract_database()
 {
 }
 
 template <class Record, class SearchStruct>
-void Abstract_database<Record, SearchStruct>::add_record(const Record& a)
+void abstract_database<Record, SearchStruct>::add_record(const Record& a)
 {
     std::ofstream out(_filename, std::ios_base::binary | std::ios_base::app);
     out.write(reinterpret_cast<char*>(&a), sizeof(Record));
@@ -60,7 +61,7 @@ void Abstract_database<Record, SearchStruct>::add_record(const Record& a)
 }
 
 template <class Record, class SearchStruct>
-Record Abstract_database<Record, SearchStruct>::get_record(const id_type& id) const
+Record abstract_database<Record, SearchStruct>::get_record(const id_type& id) const
 {
     Record a;
     std::ifstream in(_filename, std::ios_base::binary);
@@ -70,7 +71,7 @@ Record Abstract_database<Record, SearchStruct>::get_record(const id_type& id) co
 }
 
 template <class Record, class SearchStruct>
-void Abstract_database<Record, SearchStruct>::delete_record(const id_type& pos)
+void abstract_database<Record, SearchStruct>::delete_record(const id_type& pos)
 {
     char tmpname[L_tmpnam];
     tmpnam_s(tmpname);
@@ -92,7 +93,7 @@ void Abstract_database<Record, SearchStruct>::delete_record(const id_type& pos)
 }
 
 template <class Record, class SearchStruct>
-void Abstract_database<Record, SearchStruct>::change_record(const id_type& pos, const Record& a)
+void abstract_database<Record, SearchStruct>::change_record(const id_type& pos, const Record& a)
 {
     Record old = get_record(pos);
     std::ofstream out(_filename, std::ios_base::binary);
@@ -103,21 +104,32 @@ void Abstract_database<Record, SearchStruct>::change_record(const id_type& pos, 
 }
 
 template <class Record, class SearchStruct>
+const std::string& abstract_database<Record, SearchStruct>::filename() const
+{
+    return _filename;
+}
+
+template <class Record, class SearchStruct>
+id_type abstract_database<Record, SearchStruct>::size() const
+{
+    return std::ofstream(_filename, std::ios_base::binary | std::ios_base::app).tellp() / sizeof(Record);
+}
+
+template <class Record, class SearchStruct>
 template <int id>
-std::vector<id_type>
-Abstract_database<Record, SearchStruct>::find(const linked_type<id>& x) const
+std::vector<id_type> abstract_database<Record, SearchStruct>::find(const linked_type<id>& x) const
 {
     return _search.find<id>(x);
 }
 
 template <class Record, class SearchStruct>
 template <int id>
-std::vector<id_type>
-Abstract_database<Record, SearchStruct>::find(const linked_type<id>& x, const std::string& found_file_name) const
+std::vector<id_type> abstract_database<Record, SearchStruct>::find(
+    const linked_type<id>& x, const std::string& found_file_name) const
 {
     std::ofstream f(found_file_name);
     auto retval = find<id>(x);
-	for (const auto& i : retval)
-		f << i << std::endl;
-    return move(retval);
+    for (const auto& i : retval)
+        f << i << std::endl;
+    return retval;
 }

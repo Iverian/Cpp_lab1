@@ -3,47 +3,42 @@
 #include "date.h"
 #include "search_struct_traits.h"
 
-struct RECORD {
+struct drug {
     int pharmacy_id;
     char drug_name[STRMAXLEN];
     int pack_count_avail;
     double pack_price;
     date arrival_date;
     int spoil_time;
-
-    RECORD()
-        : pharmacy_id(0)
-        , drug_name()
-        , pack_count_avail(0)
-        , pack_price(0.)
-        , arrival_date()
-        , spoil_time(0)
-    {
-		std::memset(drug_name, 0, STRMAXLEN);
-    }
 };
 
-DECL_SEARCH_FIELDS{pharmacy_id, drug_name, arrival_date};
+using record_ = drug;
 
-DECL_LINK(pharmacy_id);
-DECL_LINK(drug_name);
-DECL_LINK(arrival_date);
+declare_search_fields{pharmacy_id, drug_name, arrival_date};
 
-struct DECL_SEARCH_STRUCT {
-    void index_record(const id_type& pos, const RECORD& x) override;
-    void delete_record(const RECORD& x) override;
 
-    FIND_IMPL
 
-private:
-    template <int id>
-    struct find_t;
+declare_link(pharmacy_id);
+declare_link(drug_name);
+declare_link(arrival_date);
 
-    Search_cont<LINK_VAL(pharmacy_id)> pharmacy_id;
-    Search_cont<LINK_VAL(drug_name)> drug_name;
-    Search_cont<LINK_VAL(arrival_date)> arrival_date;
+search_struct_decl_begin
+
+struct search_struct_ {
+	declare_cont(pharmacy_id);
+	declare_cont(drug_name);
+	declare_cont(arrival_date);
+
+    void index_record(const id_type& pos, const record_& x);
+    void delete_record(const record_& x);
+
+    find_implementation
 };
 
-DECL_FIND(pharmacy_id);
-DECL_FIND(drug_name);
-DECL_FIND(arrival_date);
+search_struct_decl_end
+
+declare_find_t(pharmacy_id);
+declare_find_t(drug_name);
+declare_find_t(arrival_date);
+
+

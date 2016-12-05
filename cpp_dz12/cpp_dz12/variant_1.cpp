@@ -6,7 +6,7 @@ void search_struct::index_record(const id_type& pos, const Record& x)
 {
 }
 
-void SEARCH_STRUCT::delete_record(const Record& x)
+void search_struct_::delete_record(const Record& x)
 {
 }
 

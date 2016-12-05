@@ -2,7 +2,7 @@
 
 #include "search_struct_traits.h"
 
-struct RECORD {
+struct computer {
     int code;
     char model[STRMAXLEN];
     char name[STRMAXLEN];
@@ -15,30 +15,31 @@ struct RECORD {
     int col_vo;
 };
 
-DECL_SEARCH_FIELDS{type, vol, obem, _vol};
+using record_ = computer;
 
-DECL_LINK(type, char*);
-DECL_LINK(vol, RECORD_ITEM_T(vol));
-DECL_LINK(obem, RECORD_ITEM_T(obem));
-DECL_LINK(_vol, RECORD_ITEM_T(_vol));
+declare_search_fields{type, vol, obem, _vol};
 
-struct DECL_SEARCH_STRUCT {
-    void index_record(const id_type& pos, const RECORD& x) override;
-    void delete_record(const RECORD& x) override;
+declare_link(type);
+declare_link(vol);
+declare_link(obem);
+declare_link(_vol);
 
-    FIND_IMPL
+search_struct_decl_begin
 
-private:
-    template <int id>
-    struct find_t;
+struct search_struct_ {
+    declare_cont(type);
+    declare_cont(vol);
+    declare_cont(obem);
+    declare_cont(_vol);
+    void index_record(const id_type& pos, const record_& x);
+	void delete_record(const record_& x);
 
-    Search_cont<LINK_VAL(type)> type;
-    Search_cont<LINK_VAL(vol)> vol;
-    Search_cont<LINK_VAL(obem)> obem;
-    Search_cont<LINK_VAL(_vol)> _vol;
+    find_implementation
 };
 
-DECL_FIND(type)
-DECL_FIND(vol)
-DECL_FIND(obem)
-DECL_FIND(_vol)
+declare_find_t(type)
+declare_find_t(vol)
+declare_find_t(obem)
+declare_find_t(_vol)
+
+search_struct_decl_end

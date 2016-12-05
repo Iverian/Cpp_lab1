@@ -3,7 +3,7 @@
 #include "date.h"
 #include "search_struct_traits.h"
 
-struct RECORD {
+struct training {
     char client_surname[STRMAXLEN];
     int code;
     char name_of_sport[STRMAXLEN];
@@ -14,33 +14,35 @@ struct RECORD {
     int min_count;
 };
 
-DECL_SEARCH_FIELDS { client_surname, trainer_surname, name_of_sport, train_date, min_count };
+using record_ = training;
 
-DECL_LINK(client_surname);
-DECL_LINK(trainer_surname);
-DECL_LINK(name_of_sport);
-DECL_LINK(train_date);
-DECL_LINK(min_count);
+declare_search_fields { client_surname, trainer_surname, name_of_sport, train_date, min_count };
 
-struct DECL_SEARCH_STRUCT {
-	void index_record(const id_type& pos, const RECORD& x) override;
-	void delete_record(const RECORD& x) override;
+declare_link(client_surname);
+declare_link(trainer_surname);
+declare_link(name_of_sport);
+declare_link(train_date);
+declare_link(min_count);
 
-	FIND_IMPL;
+search_struct_decl_begin
 
-private:
-	template <int id>
-	struct find_t;
+struct search_struct_ {
+	declare_cont(client_surname);
+	declare_cont(trainer_surname);
+	declare_cont(name_of_sport);
+	declare_cont(train_date);
+	declare_cont(min_count);
 
-	Search_cont<LINK_VAL(client_surname)> client_surname;
-	Search_cont<LINK_VAL(trainer_surname)> trainer_surname;
-	Search_cont<LINK_VAL(name_of_sport)> name_of_sport;
-	Search_cont<LINK_VAL(train_date)> train_date;
-	Search_cont<LINK_VAL(min_count)> min_count;
+	void index_record(const id_type& pos, const record_& x);
+	void delete_record(const record_& x);
+
+	find_implementation;
 };
 
-DECL_FIND(client_surname);
-DECL_FIND(trainer_surname);
-DECL_FIND(name_of_sport);
-DECL_FIND(train_date);
-DECL_FIND(min_count);
+declare_find_t(client_surname);
+declare_find_t(trainer_surname);
+declare_find_t(name_of_sport);
+declare_find_t(train_date);
+declare_find_t(min_count);
+
+search_struct_decl_end

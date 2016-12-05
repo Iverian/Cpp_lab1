@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Abstract_database.h"
+#include "abstract_database.h"
 #include "search_struct_traits.h"
 
 #include <iostream>
@@ -17,10 +17,10 @@
 #include "variant_3.h"
 #endif
 
-class Database : public Abstract_database<Record, SEARCH_STRUCT>
+class Database : public abstract_database<Record, search_struct_>
 {
-	using Abstract_database<Record, SEARCH_STRUCT>::Abstract_database;
+	using abstract_database<Record, search_struct_>::abstract_database;
 	void bin_to_txt(const std::string& file_name) override;
 };
 
-std::ostream& operator<<(std::ostream& os, const RECORD& x);
+std::ostream& operator<<(std::ostream& os, const record_& x);

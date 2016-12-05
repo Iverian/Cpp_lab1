@@ -12,75 +12,59 @@
 template <int id>
 struct link;
 
-template <class T>
-using Search_cont = std::multimap<T, id_type>;
-template <int id>
-using Sc_iter = typename Search_cont<typename link<id>::type>::const_iterator;
 template <int id>
 using linked_type = typename link<id>::type;
+template <class T>
+using search_cont = std::multimap<T, id_type>;
 template <int id>
-using range = std::pair<Sc_iter<id>, Sc_iter<id>>;
+using search_iter = typename search_cont<linked_type<id>>::const_iterator;
+template <int id>
+using range = std::pair<search_iter<id>, search_iter<id>>;
 
-template <class Record>
-struct search_struct_traits {
-    virtual ~search_struct_traits(){};
-    virtual void index_record(const id_type& pos, const Record& x) = 0;
-    virtual void delete_record(const Record& x) = 0;
-    template <int id>
-    std::vector<id_type> find(const LINK_VAL(id) & x)
-    {
-        return std::vector<id_type>();
-    }
-};
+#define record_ Record
+#define search_fields_ search_fields
+#define search_struct_ search_struct
 
-#define RECORD Record
-#define RECORD_ITEM_T(__id__) decltype(RECORD().__id__)
+#define field_type(struct_name, field) decltype(struct_name().field)
+#define enum_to_int(enum_name, id) std::underlying_type<enum_name>::type(enum_name::id)
+#define declare_search_fields enum search_fields_
 
-#define DECL_SEARCH_FIELDS enum class search_fields
-
-#define SEARCH_FIELDS search_fields
-
-#define ENUM_VAL(__id__) int(SEARCH_FIELDS::__id__)
-
-#define DECL_SEARCH_STRUCT                                                                                  \
-    search_struct:                                                                                          \
-    search_struct_traits<RECORD>
-
-#define SEARCH_STRUCT search_struct
-
-#define DECL_LINK(__id__)                                                                                   \
+#define declare_link(id)                                                                                    \
     template <>                                                                                             \
-    struct link<ENUM_VAL(__id__)> {                                                                         \
-        using type = std::conditional<std::is_same<std::decay<RECORD_ITEM_T(__id__)>::type, char*>::value,  \
-            std::string,                                                                                    \
-            RECORD_ITEM_T(__id__)>::type;                                                                   \
+    struct link<enum_to_int(search_fields_, id)> {                                                          \
+        using type                                                                                          \
+            = std::conditional<std::is_same<std::decay<field_type(record_, id)>::type, char*>::value,       \
+                std::string,                                                                                \
+                field_type(record_, id)>::type;                                                             \
     }
 
-#define LINK_VAL(__id__) link<ENUM_VAL(__id__)>::type
+#define linked_type_(id) linked_type<enum_to_int(search_fields_, id)>
+#define declare_cont(id) search_cont<linked_type_(id)> id
 
-#define DECL_FIND(__id__)                                                                                   \
-    \
+#define search_struct_decl_begin                                                                            \
+    template <int id>                                                                                       \
+    struct find_t;
+#define search_struct_decl_end
+
+#define declare_find_t(id)                                                                                  \
 template<>                                                                                                  \
-        \
-struct SEARCH_STRUCT::find_t<ENUM_VAL(__id__)>                                                              \
+struct find_t<enum_to_int(search_fields_, id)>                                                              \
     {                                                                                                       \
-        find_t(SEARCH_STRUCT& parent)                                                                       \
+        find_t(search_struct_& parent)                                                                      \
             : m_parent(parent)                                                                              \
         {                                                                                                   \
         }                                                                                                   \
-        range<ENUM_VAL(__id__)> operator()(const LINK_VAL(__id__) & x)                                      \
+        range<enum_to_int(search_fields_, id)> operator()(const linked_type_(id) & x)                       \
         {                                                                                                   \
-            return m_parent.__id__.equal_range(x);                                                          \
+            return m_parent.id.equal_range(x);                                                              \
         }                                                                                                   \
-    \
 private:                                                                                                    \
-        SEARCH_STRUCT& m_parent;                                                                            \
-    \
+        search_struct_& m_parent;                                                                           \
 };
 
-#define FIND_IMPL                                                                                           \
+#define find_implementation                                                                                 \
     template <int id>                                                                                       \
-    std::vector<id_type> SEARCH_STRUCT::find(const LINK_VAL(id) & x)                                        \
+    std::vector<id_type> find(const linked_type<id>& x)                                                     \
     {                                                                                                       \
         auto found = find_t<id>(*this)(x);                                                                  \
         std::vector<id_type> retval;                                                                        \
@@ -90,8 +74,19 @@ private:                                                                        
         return retval;                                                                                      \
     }
 
-#define DECL_CONT(__id__) Search_cont<LINK_VAL(__id__)> __id__
+#define declare_search_struct(...)                                                                          \
+    template <int id>                                                                                       \
+    struct find_t;                                                                                          \
+    struct search_struct_ {                                                                                 \
+        __VA_ARGS__                                                                                         \
+        void index_record(const id_type& pos, const record_& x);                                            \
+        void delete_record(const record_& x);                                                               \
+        find_implementation                                                                                 \
+    }
 
-#define DECL_ALL(__id__)                                                                                    \
-    DECL_LINK(__id__);                                                                                      \
-    DECL_FIND(__id__)
+template <class Record>
+struct search_struct_traits {
+    virtual ~search_struct_traits(){};
+    virtual void index_record(const id_type& pos, const Record& x) = 0;
+    virtual void delete_record(const Record& x) = 0;
+};
