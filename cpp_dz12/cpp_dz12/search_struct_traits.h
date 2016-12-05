@@ -54,9 +54,7 @@ struct search_struct;
 #define search_struct_decl_end
 
 #define declare_find_t(ID)                                                                                  \
-    \
 template<>                                                                                                  \
-        \
 struct find_t<enum_to_int(search_fields_, ID)>                                                              \
     {                                                                                                       \
         find_t(search_struct_& parent)                                                                      \
@@ -68,7 +66,6 @@ struct find_t<enum_to_int(search_fields_, ID)>                                  
             return m_parent.ID.equal_range(x);                                                              \
         }                                                                                                   \
         search_struct_& m_parent;                                                                           \
-    \
 };
 
 #define find_implementation                                                                                 \
