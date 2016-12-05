@@ -23,9 +23,10 @@ date::date(const date& p_dat)
 
 date date::cur()
 {
-	auto t = time(0);
-	auto st = gmtime(&t);
-	date res(st->tm_mday, st->tm_mon, st->tm_year);
+	auto t = time(nullptr);
+	tm st;
+	gmtime_s(&st, &t);
+	date res(st.tm_mday, st.tm_mon, st.tm_year);
 	return res;
 }
 

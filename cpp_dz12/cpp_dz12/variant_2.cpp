@@ -2,11 +2,19 @@
 
 #ifdef _VAR_2
 
-void search_struct_::index_record(const id_type & pos, const record_ & x)
+void search_struct<training>::index_record(const id_type & pos, const training & x)
 {
 }
 
-void search_struct_::delete_record(const record_ & x)
+void search_struct<training>::delete_record(const training & x)
+{
+}
+
+void bin_to_txt<training>::operator()(const std::string& filename) const
+{
+}
+
+std::ostream& operator<<(std::ostream& os, const training& x)
 {
 }
 

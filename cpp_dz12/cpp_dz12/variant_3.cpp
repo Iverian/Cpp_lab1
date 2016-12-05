@@ -2,25 +2,25 @@
 
 #ifdef _VAR_3
 
-void search_struct_::index_record(const id_type& pos, const record_& x)
+void search_struct<drug>::index_record(const id_type& pos, const drug& x)
 {
-    pharmacy_id.insert(std::make_pair(x.pharmacy_id, pos));
-    drug_name.insert(std::make_pair(x.drug_name, pos));
-    arrival_date.insert(std::make_pair(x.arrival_date, pos));
+	insert_(pharmacy_id, pos, x);
+	insert_(drug_name, pos, x);
+	insert_(arrival_date, pos, x);
 }
 
-void search_struct_::delete_record(const record_& x)
+void search_struct<drug>::delete_record(const drug& x)
 {
-    pharmacy_id.erase(x.pharmacy_id);
-    drug_name.erase(x.drug_name);
-    arrival_date.erase(x.arrival_date);
+	erase_(pharmacy_id, x);
+	erase_(drug_name, x);
+	erase_(arrival_date, x);
 }
 
-void Database::bin_to_txt(const std::string& file_name)
+void bin_to_txt<drug>::operator()(const std::string& filename) const
 {
 }
 
-std::ostream& operator<<(std::ostream& os, const record_& x)
+std::ostream& operator<<(std::ostream& os, const drug& x)
 {
     return os << "{ " << x.pharmacy_id << ", " << x.drug_name << ", " << x.pack_count_avail << ", "
               << x.pack_price << ", " << x.arrival_date << ", " << x.spoil_time << " }" << std::endl;

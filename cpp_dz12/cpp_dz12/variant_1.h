@@ -2,6 +2,8 @@
 
 #include "search_struct_traits.h"
 
+#ifdef _VAR_1
+
 struct computer {
     int code;
     char model[STRMAXLEN];
@@ -26,11 +28,12 @@ declare_link(_vol);
 
 search_struct_decl_begin
 
-struct search_struct_ {
+search_struct_head {
     declare_cont(type);
     declare_cont(vol);
     declare_cont(obem);
     declare_cont(_vol);
+
     void index_record(const id_type& pos, const record_& x);
 	void delete_record(const record_& x);
 
@@ -43,3 +46,5 @@ declare_find_t(obem)
 declare_find_t(_vol)
 
 search_struct_decl_end
+
+#endif

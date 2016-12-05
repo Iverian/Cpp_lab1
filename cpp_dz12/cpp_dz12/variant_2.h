@@ -3,6 +3,8 @@
 #include "date.h"
 #include "search_struct_traits.h"
 
+#ifdef _VAR_2
+
 struct training {
     char client_surname[STRMAXLEN];
     int code;
@@ -26,7 +28,7 @@ declare_link(min_count);
 
 search_struct_decl_begin
 
-struct search_struct_ {
+search_struct_head {
 	declare_cont(client_surname);
 	declare_cont(trainer_surname);
 	declare_cont(name_of_sport);
@@ -46,3 +48,5 @@ declare_find_t(train_date);
 declare_find_t(min_count);
 
 search_struct_decl_end
+
+#endif
