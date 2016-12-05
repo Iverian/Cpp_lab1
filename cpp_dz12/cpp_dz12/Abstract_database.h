@@ -5,6 +5,7 @@
 
 #include <fstream>
 #include <map>
+#include <vector>
 
 template <class Record, class SearchStruct>
 class Abstract_database {
@@ -14,16 +15,16 @@ public:
 	virtual ~Abstract_database();;
 
     void add_record(const Record& a);
-    Record get_record(const id_type& id);
+    Record get_record(const id_type& id) const;
     void delete_record(const id_type& pos);
     void change_record(const id_type& pos, const Record& a);
-
+	size_t size() const;
     virtual void bin_to_txt(const std::string& txtfile_name) = 0;
 
-    template <int Param>
-    std::pair<Sc_iter<Param>, Sc_iter<Param>> find(const typename link<Param>::value& x);
-    template <int Param>
-    std::pair<Sc_iter<Param>, Sc_iter<Param>> find(const typename link<Param>::value& x, const std::string& found_file_name);
+    template <int id>
+    std::vector<id_type> find(const linked_type<id>& x) const;
+    template <int id>
+    std::vector<id_type> find(const linked_type<id>& x, const std::string& found_file_name) const;
 
 private:
     std::string _filename;
@@ -59,13 +60,13 @@ void Abstract_database<Record, SearchStruct>::add_record(const Record& a)
 }
 
 template <class Record, class SearchStruct>
-Record Abstract_database<Record, SearchStruct>::get_record(const id_type& id)
+Record Abstract_database<Record, SearchStruct>::get_record(const id_type& id) const
 {
     Record a;
     std::ifstream in(_filename, std::ios_base::binary);
     set_pos<Record>(id, std::ios_base::beg, in);
     in.read(reinterpret_cast<char*>(&a), sizeof(Record));
-    return std::move(a);
+    return a;
 }
 
 template <class Record, class SearchStruct>
@@ -102,21 +103,21 @@ void Abstract_database<Record, SearchStruct>::change_record(const id_type& pos, 
 }
 
 template <class Record, class SearchStruct>
-template <int Param>
-std::pair<Sc_iter<Param>, Sc_iter<Param>>
-Abstract_database<Record, SearchStruct>::find(const typename link<Param>::value& x)
+template <int id>
+std::vector<id_type>
+Abstract_database<Record, SearchStruct>::find(const linked_type<id>& x) const
 {
-    return _search.find<Param>(x);
+    return _search.find<id>(x);
 }
 
 template <class Record, class SearchStruct>
-template <int Param>
-std::pair<Sc_iter<Param>, Sc_iter<Param>>
-Abstract_database<Record, SearchStruct>::find(const typename link<Param>::value& x, const std::string& found_file_name)
+template <int id>
+std::vector<id_type>
+Abstract_database<Record, SearchStruct>::find(const linked_type<id>& x, const std::string& found_file_name) const
 {
     std::ofstream f(found_file_name);
-    auto retval = find<Param>(x);
-    for (auto i = retval.first; i != retval.second; ++i)
-        f << *i << std::endl;
+    auto retval = find<id>(x);
+	for (const auto& i : retval)
+		f << i << std::endl;
     return move(retval);
 }

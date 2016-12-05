@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
 VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Dz1.2", "Dz1.2\Dz1.2.vcxproj", "{747D80CE-8EC2-404E-9FFF-091F20FFE51C}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "cpp_dz12", "cpp_dz12\cpp_dz12.vcxproj", "{747D80CE-8EC2-404E-9FFF-091F20FFE51C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

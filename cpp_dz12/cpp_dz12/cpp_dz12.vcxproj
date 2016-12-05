@@ -22,6 +22,7 @@
     <ProjectGuid>{747D80CE-8EC2-404E-9FFF-091F20FFE51C}</ProjectGuid>
     <RootNamespace>Dz12</RootNamespace>
     <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
+    <ProjectName>cpp_dz12</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -110,6 +111,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="date.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="variant_1.cpp" />
     <ClCompile Include="variant_2.cpp" />
@@ -117,6 +119,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Abstract_database.h" />
+    <ClInclude Include="date.h" />
     <ClInclude Include="search_struct_traits.h" />
     <ClInclude Include="utility.h" />
     <ClInclude Include="variant.h" />

@@ -1,0 +1,13 @@
+BasedOnStyle: WebKit
+IndentWidth: 4
+TabWidth: 4
+Language: Cpp
+Standard: Cpp11
+Cpp11BracedListStyle: true
+BinPackParameters: false
+IndentCaseLabels: false
+ColumnLimit: 109
+AllowShortIfStatementsOnASingleLine: false
+AllowShortFunctionsOnASingleLine: false
+AlignTrailingComments: true
+AlwaysBreakTemplateDeclarations: true

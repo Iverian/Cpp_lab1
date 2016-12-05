@@ -1,14 +1,13 @@
 #pragma once
 
 #include "Abstract_database.h"
+#include "search_struct_traits.h"
 
 #include <iostream>
 
-#define MAXLEN 100
-
-#define _VAR_1
+//#define _VAR_1
 //#define _VAR_2
-//#define _VAR_3
+#define _VAR_3
 
 #ifdef _VAR_1
 #include "variant_1.h"
@@ -18,10 +17,10 @@
 #include "variant_3.h"
 #endif
 
-class Database : public Abstract_database<Record, Search_struct>
+class Database : public Abstract_database<Record, SEARCH_STRUCT>
 {
-	using Abstract_database<Record, Search_struct>::Abstract_database;
+	using Abstract_database<Record, SEARCH_STRUCT>::Abstract_database;
 	void bin_to_txt(const std::string& file_name) override;
 };
 
-std::ostream& operator<<(std::ostream& os, const Record& x);
+std::ostream& operator<<(std::ostream& os, const RECORD& x);
