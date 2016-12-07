@@ -1,3 +1,0 @@
-"C:\Program Files (x86)\CMake\bin\cmake.exe" -E remove -f CMakeFiles\cpp_dz12.dir/objects.a
-C:\mingw530_32\bin\ar.exe cr CMakeFiles\cpp_dz12.dir/objects.a @CMakeFiles\cpp_dz12.dir\objects1.rsp
-C:\mingw530_32\bin\g++.exe  -g   -Wl,--whole-archive CMakeFiles\cpp_dz12.dir/objects.a -Wl,--no-whole-archive  -o cpp_dz12.exe -Wl,--out-implib,libcpp_dz12.dll.a -Wl,--major-image-version,0,--minor-image-version,0 @CMakeFiles\cpp_dz12.dir\linklibs.rsp

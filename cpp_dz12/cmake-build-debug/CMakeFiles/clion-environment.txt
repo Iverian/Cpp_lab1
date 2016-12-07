@@ -1,2 +1,0 @@
-ToolSet: w64 5.0@C:\mingw530_32
-CMake: 3.4.1@C:\Program Files (x86)\CMake\bin\cmake.exe

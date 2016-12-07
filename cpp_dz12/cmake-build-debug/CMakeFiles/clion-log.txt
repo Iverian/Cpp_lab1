@@ -1,4 +1,0 @@
-"C:\Program Files (x86)\CMake\bin\cmake.exe" -DCMAKE_BUILD_TYPE=Debug -G "CodeBlocks - MinGW Makefiles" C:\Users\trololo\Documents\C++\repo\cpp_dz12
--- Configuring done
--- Generating done
--- Build files have been written to: C:/Users/trololo/Documents/C++/repo/cpp_dz12/cmake-build-debug
