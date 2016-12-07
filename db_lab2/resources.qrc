@@ -1,0 +1,6 @@
+<RCC>
+    <qresource prefix="/">
+        <file>res/dora.png</file>
+        <file>res/plus.png</file>
+    </qresource>
+</RCC>
