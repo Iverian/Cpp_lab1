@@ -58,6 +58,7 @@ void DoraTheExplorer::on_sendButton_clicked()
 		if (query.isSelect()) {
 			auto model = new QSqlQueryModel;
 			model->setQuery(query);
+			ui->tableList->setCurrentIndex(ui->tableList->model()->index(-1, 0));
 			ui->tableView->setModel(model);
 			ui->tableName->setText("SELECT");
 		} else
