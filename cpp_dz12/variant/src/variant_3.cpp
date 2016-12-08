@@ -1,7 +1,8 @@
-#include "variant.h"
+#include <variant.h>
 
 #ifdef _VAR_3
 
+template <>
 void search_struct<drug>::index_record(const id_type& pos, const drug& x)
 {
 	insert_(pharmacy_id, pos, x);
@@ -9,6 +10,7 @@ void search_struct<drug>::index_record(const id_type& pos, const drug& x)
 	insert_(arrival_date, pos, x);
 }
 
+template <>
 void search_struct<drug>::delete_record(const drug& x)
 {
 	erase_(pharmacy_id, x);
@@ -16,7 +18,7 @@ void search_struct<drug>::delete_record(const drug& x)
 	erase_(arrival_date, x);
 }
 
-void bin_to_txt<drug>::operator()(const std::string& filename) const
+void to_text<drug>::operator()(const std::string& filename) const
 {
 }
 

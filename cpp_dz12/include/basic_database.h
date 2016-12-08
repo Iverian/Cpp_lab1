@@ -23,7 +23,7 @@ public:
     Record get_record(const id_type& id) const;
     void delete_record(const id_type& pos);
     void change_record(const id_type& pos, const Record& a);
-    void bin_to_txt(const std::string& txtfile_name) const;
+    void to_text(const std::string &filename) const;
 
     template <int id>
     std::vector<id_type> find(const linked_type<id>& x) const;
@@ -35,9 +35,9 @@ private:
     SearchStruct<Record> _search;
 };
 
-template_ void basic_database_::bin_to_txt(const std::string& txtfile_name) const
+template_ void basic_database_::to_text(const std::string &filename) const
 {
-	BinToText<Record>()(txtfile_name);
+	BinToText<Record>()(filename);
 }
 
 template_ basic_database_::basic_database()
@@ -117,7 +117,7 @@ template_ id_type basic_database_::size() const
 template_ template <int id>
 std::vector<id_type> basic_database_::find(const linked_type<id>& x) const
 {
-    return _search.find<id>(x);
+    return _search.template find<id>(x);
 }
 
 template_ template <int id>

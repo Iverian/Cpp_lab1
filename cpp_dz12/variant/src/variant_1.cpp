@@ -1,4 +1,4 @@
-#include "variant.h"
+#include <variant.h>
 
 #ifdef _VAR_1
 
@@ -10,7 +10,7 @@ void search_struct<computer>::delete_record(const computer& x)
 {
 }
 
-void bin_to_txt<computer>::operator()(const std::string& filename) const
+void to_text<computer>::operator()(const std::string& filename) const
 {
 }
 

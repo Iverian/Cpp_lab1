@@ -59,6 +59,7 @@ void DoraTheExplorer::on_sendButton_clicked()
 			auto model = new QSqlQueryModel;
 			model->setQuery(query);
 			ui->tableView->setModel(model);
+			ui->tableName->setText("SELECT");
 		} else
 			refreshTableList(false);
 	}
@@ -107,14 +108,22 @@ void DoraTheExplorer::refreshTableList(bool databaseChanged)
 			ui->tableList->setCurrentIndex(ui->tableList->model()->index(newIndex, 0));
 		refreshTableView();
 	}
+	else
+		ui->tableList->setModel(nullptr);
 }
 
 void DoraTheExplorer::refreshTableView()
 {
 	auto activeDb = activeDatabase();
-	if (activeDb.isOpen()) {
+	auto activeTbl = activeTable();
+	if (activeDb.isOpen() && !activeTbl.isEmpty()) {
 		auto model = new QSqlQueryModel();
-		model->setQuery("SELECT * FROM " + activeTable(), activeDb);
+		model->setQuery("SELECT * FROM " + activeTbl, activeDb);
 		ui->tableView->setModel(model);
+		ui->tableName->setText(activeDb.databaseName() + "." + activeTbl);
+	}
+	else {
+		ui->tableView->setModel(nullptr);
+		ui->tableName->setText("NO TABLE");
 	}
 }
