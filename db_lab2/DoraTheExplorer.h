@@ -30,6 +30,6 @@ private:
 	void refreshTableList(bool databaseChanged);
 	void refreshTableView();
 
-	QVector<QSqlDatabase> m_bases;
+	QVector<QSqlDatabase> m_addedDb;
 	Ui::DoraTheExplorer* ui;
 };

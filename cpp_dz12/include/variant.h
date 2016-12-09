@@ -5,9 +5,9 @@
 
 #include <iostream>
 
-//#define _VAR_1
+#define _VAR_1
 //#define _VAR_2
-#define _VAR_3
+//#define _VAR_3
 
 template <class Record>
 struct to_text;
@@ -23,6 +23,7 @@ struct to_text;
 template<>
 struct to_text<record_>
 {
+    static record_ get();
 	void operator()(const std::string& filename) const;
 };
 

@@ -64,7 +64,7 @@
        <property name="orientation">
         <enum>Qt::Vertical</enum>
        </property>
-       <widget class="QWidget" name="">
+       <widget class="QWidget" name="layoutWidget">
         <layout class="QVBoxLayout" name="verticalLayout_2">
          <item>
           <widget class="QLabel" name="tableName">
@@ -82,10 +82,16 @@
          </item>
         </layout>
        </widget>
-       <widget class="QWidget" name="">
+       <widget class="QWidget" name="layoutWidget">
         <layout class="QVBoxLayout" name="verticalLayout_3">
          <item>
           <widget class="QPlainTextEdit" name="queryInput">
+           <property name="font">
+            <font>
+             <family>Courier New</family>
+             <pointsize>9</pointsize>
+            </font>
+           </property>
            <property name="placeholderText">
             <string>Input SQL query</string>
            </property>

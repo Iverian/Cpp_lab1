@@ -1,5 +1,6 @@
 #pragma once
 
+#include <declare_names.h>
 #include <utility.h>
 
 #include <map>
@@ -24,15 +25,11 @@ using range = std::pair<search_iter<id>, search_iter<id>>;
 template <class Record, template <int> class Find>
 struct _search_struct;
 
-#define record_ Record
-
-#define insert_(ID, pos, record) (ID.insert(std::make_pair((record).ID, pos)))
-#define erase_(ID, record) (ID.erase((record).ID))
-
+#define size_(array) sizeof(array) / sizeof(*array)
 #define field_type(struct_name, field) decltype(struct_name().field)
 #define enum_to_int(enum_name, id) static_cast<int>(enum_name::id)
 
-#define declare_record(rec) using record_ = rec;
+#define record_ Record
 
 #define declare_search_fields(...) enum search_fields { __VA_ARGS__ };
 
@@ -46,29 +43,7 @@ struct _search_struct;
     };
 
 #define linked_type_(ID) linked_type<enum_to_int(search_fields, ID)>
-#define declare_cont(ID) search_cont<linked_type_(ID)> ID;
-
-#define search_struct_decl_begin                                                                            \
-    template <int id>                                                                                       \
-    struct find_t;
-
-#define declare_search_struct(...)                                                                          \
-    template <template <int> class Find>                                                                    \
-    struct _search_struct<Record, Find> {                                                                   \
-        __VA_ARGS__;                                                                                        \
-        void index_record(const id_type& pos, const Record& x);                                             \
-        void delete_record(const Record& x);                                                                \
-        template <int id>                                                                                   \
-        std::vector<id_type> find(const linked_type<id>& x)                                                 \
-        {                                                                                                   \
-            auto found = Find<id>(*this)(x);                                                                \
-            std::vector<id_type> retval;                                                                    \
-            for (auto i = found.first; i != found.second; ++i)                                              \
-                retval.push_back(i.second);                                                                 \
-            retval.shrink_to_fit();                                                                         \
-            return retval;                                                                                  \
-        }                                                                                                   \
-    };
+#define declare_cont_(ID) search_cont<linked_type_(ID)> ID;
 
 #define declare_find_t(ID)                                                                                  \
     template <>                                                                                             \
@@ -84,6 +59,44 @@ struct _search_struct;
         search_struct<Record>& m_parent;                                                                    \
     };
 
-#define search_struct_decl_end                                                                              \
+#define stringize_single_(e) #e,
+#define insert_(ID) (ID.insert(std::make_pair((x).ID, pos)));
+#define erase_(ID) (ID.erase((x).ID));
+
+#define declare_record(__record) using record_ = __record;
+#define names_ ::_names
+
+#define declare_searchable(...)                                                                             \
+                                                                                                            \
+    declare_search_fields(__VA_ARGS__);                                                                     \
+    namespace {                                                                                             \
+        constexpr const char* const _names[] = {identity_(map_(stringize_single_, __VA_ARGS__))};           \
+    };                                                                                                      \
+    identity_(map_(declare_link, __VA_ARGS__));                                                             \
+    template <int id>                                                                                       \
+    struct find_t;                                                                                          \
+    template <template <int> class Find>                                                                    \
+    struct _search_struct<record_, Find> {                                                                  \
+        identity_(map_(declare_cont_, __VA_ARGS__));                                                        \
+        void index_record(const id_type& pos, const record_& x)                                             \
+        {                                                                                                   \
+            identity_(map_(insert_, __VA_ARGS__));                                                          \
+        }                                                                                                   \
+        void delete_record(const record_& x)                                                                \
+        {                                                                                                   \
+            identity_(map_(erase_, __VA_ARGS__));                                                           \
+        }                                                                                                   \
+        template <int id>                                                                                   \
+        std::vector<id_type> find(const linked_type<id>& x)                                                 \
+        {                                                                                                   \
+            auto found = Find<id>(*this)(x);                                                                \
+            std::vector<id_type> retval;                                                                    \
+            for (auto i = found.first; i != found.second; ++i)                                              \
+                retval.push_back(i->second);                                                                \
+            retval.shrink_to_fit();                                                                         \
+            return retval;                                                                                  \
+        }                                                                                                   \
+    };                                                                                                      \
     template <class Record>                                                                                 \
-    using search_struct = _search_struct<Record, find_t>;
+    using search_struct = _search_struct<Record, find_t>;                                                   \
+    identity_(map_(declare_find_t, __VA_ARGS__))

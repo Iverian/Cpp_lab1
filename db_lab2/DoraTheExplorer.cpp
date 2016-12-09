@@ -10,7 +10,7 @@
 
 DoraTheExplorer::DoraTheExplorer(QWidget* parent)
 	: QMainWindow(parent)
-	, m_bases()
+	, m_addedDb()
 	, ui(new Ui::DoraTheExplorer)
 {
 	ui->setupUi(this);
@@ -30,16 +30,16 @@ void DoraTheExplorer::on_addDb_clicked()
 {
 	auto database = AddDatabaseDialog::add(this);
 	if (database.open())
-		m_bases.append(database);
+		m_addedDb.append(database);
 	refreshDbList(false);
 }
 
 void DoraTheExplorer::on_deleteDb_clicked()
 {
 	auto number = ui->dbList->currentIndex().row();
-	m_bases[number].close();
-	QSqlDatabase::removeDatabase(m_bases[number].connectionName());
-	m_bases.erase(m_bases.begin() + number);
+	m_addedDb[number].close();
+	QSqlDatabase::removeDatabase(m_addedDb[number].connectionName());
+	m_addedDb.erase(m_addedDb.begin() + number);
 	refreshDbList(true);
 }
 
@@ -71,7 +71,7 @@ QSqlDatabase DoraTheExplorer::activeDatabase()
 	QSqlDatabase retval;
 	auto index = ui->dbList->currentIndex().row();
 	if (index != -1) {
-		retval = m_bases[index];
+		retval = m_addedDb[index];
 		retval.open();
 	}
 	return retval;
@@ -85,7 +85,7 @@ QString DoraTheExplorer::activeTable()
 void DoraTheExplorer::refreshDbList(bool calledFromDelete)
 {
 	QStringList dbNames;
-	for (auto& i : m_bases)
+	for (auto& i : m_addedDb)
 		dbNames.append(i.databaseName());
 	auto activeDb = ui->dbList->currentIndex().data().toString();
 	auto newIndex = calledFromDelete ? dbNames.indexOf(activeDb)
