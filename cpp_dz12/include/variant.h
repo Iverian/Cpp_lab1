@@ -20,13 +20,15 @@ struct to_text;
 #include <variant_3.h>
 #endif
 
-template<>
-struct to_text<record_>
-{
-    static record_ get();
-	void operator()(const std::string& filename) const;
-};
+template <class Record>
+struct to_text;
 
 using database = basic_database<record_, search_struct, to_text>;
+
+template <>
+struct to_text<record_> {
+    static record_ get();
+    void operator()(const database& parent, const std::string& filename) const;
+};
 
 std::ostream& operator<<(std::ostream& os, const record_& x);

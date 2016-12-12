@@ -1,6 +1,6 @@
 #pragma once
 
-#include <declare_names.h>
+#include <macro_list.h>
 #include <utility.h>
 
 #include <map>
@@ -23,7 +23,7 @@ template <int id>
 using range = std::pair<search_iter<id>, search_iter<id>>;
 
 template <class Record, template <int> class Find>
-struct _search_struct;
+struct __search_struct__;
 
 #define size_(array) sizeof(array) / sizeof(*array)
 #define field_type(struct_name, field) decltype(struct_name().field)
@@ -41,22 +41,41 @@ struct _search_struct;
                 std::string,                                                                                \
                 field_type(record_, ID)>::type;                                                             \
     };
-
+#define declare_link_                                                                                       \
+    template <int id>                                                                                       \
+    struct link {                                                                                           \
+        using type = int;                                                                                   \
+    };
 #define linked_type_(ID) linked_type<enum_to_int(search_fields, ID)>
 #define declare_cont_(ID) search_cont<linked_type_(ID)> ID;
+
+#define names ::_names
+#define search_struct ::_search_struct
 
 #define declare_find_t(ID)                                                                                  \
     template <>                                                                                             \
     struct find_t<enum_to_int(search_fields, ID)> {                                                         \
-        find_t(search_struct<Record>& parent)                                                               \
+        find_t(const search_struct<record_>& parent)                                                        \
             : m_parent(parent)                                                                              \
         {                                                                                                   \
         }                                                                                                   \
-        range<enum_to_int(search_fields, ID)> operator()(const linked_type_(ID) & x)                        \
+        range<enum_to_int(search_fields, ID)> operator()(const linked_type_(ID) & x) const                  \
         {                                                                                                   \
             return m_parent.ID.equal_range(x);                                                              \
         }                                                                                                   \
-        search_struct<Record>& m_parent;                                                                    \
+        const search_struct<record_>& m_parent;                                                             \
+    };
+
+#define declare_find_                                                                                       \
+    template <int id>                                                                                       \
+    struct find_t {                                                                                         \
+        find_t(const search_struct<record_>& parent)                                                        \
+        {                                                                                                   \
+        }                                                                                                   \
+        range<id> operator()(const linked_type<id>& x) const                                                \
+        {                                                                                                   \
+            return range<id>();                                                                             \
+        }                                                                                                   \
     };
 
 #define stringize_single_(e) #e,
@@ -64,19 +83,18 @@ struct _search_struct;
 #define erase_(ID) (ID.erase((x).ID));
 
 #define declare_record(__record) using record_ = __record;
-#define names_ ::_names
 
 #define declare_searchable(...)                                                                             \
-                                                                                                            \
     declare_search_fields(__VA_ARGS__);                                                                     \
     namespace {                                                                                             \
         constexpr const char* const _names[] = {identity_(map_(stringize_single_, __VA_ARGS__))};           \
     };                                                                                                      \
+    declare_link_;                                                                                          \
     identity_(map_(declare_link, __VA_ARGS__));                                                             \
     template <int id>                                                                                       \
     struct find_t;                                                                                          \
     template <template <int> class Find>                                                                    \
-    struct _search_struct<record_, Find> {                                                                  \
+    struct __search_struct__<record_, Find> {                                                               \
         identity_(map_(declare_cont_, __VA_ARGS__));                                                        \
         void index_record(const id_type& pos, const record_& x)                                             \
         {                                                                                                   \
@@ -87,7 +105,7 @@ struct _search_struct;
             identity_(map_(erase_, __VA_ARGS__));                                                           \
         }                                                                                                   \
         template <int id>                                                                                   \
-        std::vector<id_type> find(const linked_type<id>& x)                                                 \
+        std::vector<id_type> find(const linked_type<id>& x) const                                           \
         {                                                                                                   \
             auto found = Find<id>(*this)(x);                                                                \
             std::vector<id_type> retval;                                                                    \
@@ -97,6 +115,9 @@ struct _search_struct;
             return retval;                                                                                  \
         }                                                                                                   \
     };                                                                                                      \
-    template <class Record>                                                                                 \
-    using search_struct = _search_struct<Record, find_t>;                                                   \
-    identity_(map_(declare_find_t, __VA_ARGS__))
+    namespace {                                                                                             \
+        template <class Record>                                                                             \
+        using _search_struct = __search_struct__<Record, find_t>;                                           \
+    }                                                                                                       \
+    declare_find_;                                                                                          \
+    identity_(map_(declare_find_t, __VA_ARGS__));
