@@ -8,12 +8,16 @@ MyMainWindow::MyMainWindow(QWidget* parent)
 {
 	ui.setupUi(this);
 
-	db = QSqlDatabase::addDatabase("QPSQL");
-	db.setHostName("195.19.32.74");
-	db.setUserName("student");
-	db.setPassword("bmstu");
-    db.setDatabaseName("fn1131_2016");
-	db.open();
+//	db = QSqlDatabase::addDatabase("QPSQL");
+//	db.setHostName("195.19.32.74");
+//	db.setUserName("student");
+//	db.setPassword("bmstu");
+//    db.setDatabaseName("fn1131_2016");
+//	db.open();
+
+    db = QSqlDatabase::addDatabase("QSQLITE");
+    db.setDatabaseName("no_name");
+    db.open();
 
 	ui.listView->setModel(new QStringListModel(db.tables()));
 }
@@ -46,4 +50,9 @@ void MyMainWindow::on_listView_clicked(const QModelIndex &index)
     auto model = new QSqlQueryModel;
     model->setQuery("select * from " + index.data().toString(), db);
     ui.tableView->setModel(model);
+}
+
+void MyMainWindow::on_lineEdit_returnPressed()
+{
+    on_pushButton_clicked();
 }

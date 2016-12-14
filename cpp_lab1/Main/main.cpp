@@ -31,7 +31,8 @@ enum actions
 	GET_FE_BY_EDGE = 2,
 	GET_SFE_BY_SURF_ID = 3,
 	GET_SFE_NODES_BY_SURF_ID = 4,
-	GET_CONT_NEIGH= 5
+	GET_CONT_NEIGH= 5,
+	END
 };
 
 using namespace std;
@@ -81,14 +82,16 @@ int main()
             print_to_file(filenames[GET_CONT_NEIGH], my_mesh.get_cont_neighs());
         }
 		default:
+			cout << "USAGE: " << endl << help_msg << endl;
 			break;
         }
-
-		cout << "Output has been written into file: " << filenames[selector] << "\n\tEcho output into this window? (y/n) : ";
-		if (user_confirm(cin)) {
-			cout << endl << "--- " << filenames[selector] << " ---" << endl;
-			echo(ifstream(filenames[selector]), cout);
-			cout << "--- " << filenames[selector] << " ---" << endl << endl;
+		if (selector < END && selector >= EXIT) {
+			cout << "Output has been written into file: " << filenames[selector] << "\n\tEcho output into this window? (y/n) : ";
+			if (user_confirm(cin)) {
+				cout << endl << "--- " << filenames[selector] << " ---" << endl;
+				echo(ifstream(filenames[selector]), cout);
+				cout << "--- " << filenames[selector] << " ---" << endl << endl;
+			}
 		}
     }
     return 0;

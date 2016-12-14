@@ -57,6 +57,7 @@ mesh ANEU_mesh_loader::load_mesh(const std::string& p_aneu_filename)
         for (uint32_t i = 0; i < nodes_in_sfe; ++i)
             mesh_file >> input.nodes.at(i);
         input.id = id;
+		retval.sfe_cont().push_back(input);
     }
 
     return move(retval);
