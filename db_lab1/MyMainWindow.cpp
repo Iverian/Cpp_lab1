@@ -13,14 +13,17 @@ MyMainWindow::MyMainWindow(QWidget* parent)
 	db.setUserName("student");
 	db.setPassword("bmstu");
     db.setDatabaseName("fn1131_2016");
-	db.open();
-
+	if (!db.open()) {
+		db = QSqlDatabase::addDatabase("QSQLITE");
+		db.setDatabaseName("xui");
+		db.open();
+	}
 	ui.listView->setModel(new QStringListModel(db.tables()));
 }
 
 void MyMainWindow::on_pushButton_clicked()
 {
-	auto executedQuery = db.exec(ui.lineEdit->text());
+	auto executedQuery = db.exec(ui.queryInput->toPlainText());
     auto error = executedQuery.lastError();
     if (error.type() != QSqlError::NoError)
         emit emitError(error.text());

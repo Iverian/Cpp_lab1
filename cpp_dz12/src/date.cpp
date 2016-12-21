@@ -71,6 +71,12 @@ std::ostream& operator<<(std::ostream& lhs, const date& rhs)
                << "-" << std::setw(2) << rhs.mday << std::setfill(' ');
 }
 
+std::wostream& operator<<(std::wostream& lhs, const date& rhs)
+{
+    return lhs << std::setfill(L'0') << std::setw(4) << rhs.year + 1990 << L"-" << std::setw(2) << rhs.mon + 1
+               << L"-" << std::setw(2) << rhs.mday << std::setfill(L' ');
+}
+
 std::istream& skip_nd(std::istream& is)
 {
     char c;

@@ -84,6 +84,32 @@ struct __search_struct__;
 
 #define declare_record(__record) using record_ = __record;
 
+#define db_ref_ __db
+#define retval_ __ret
+#define find_case_statement(ID)                                                                             \
+    case ID: {                                                                                              \
+        linked_type_(ID) x;                                                                                 \
+        std::cin >> x;                                                                                      \
+        retval_ = db_ref_.template find<ID>(x);                                                             \
+        break;                                                                                              \
+    }
+#define find_in_db_ __db_find
+
+#define declare_find_function(...)                                                                          \
+    template <template <class> class BinToText>                                                             \
+    std::vector<id_type> find_in_db_(                                                                       \
+        const basic_database<record_, search_struct, BinToText>& db_ref_, id_type id)                       \
+    {                                                                                                       \
+        std::vector<id_type> retval_;                                                                       \
+        switch (id) {                                                                                       \
+            identity_(map_(find_case_statement, __VA_ARGS__)) default:                                      \
+            {                                                                                               \
+                break;                                                                                      \
+            }                                                                                               \
+        }                                                                                                   \
+        return retval_;                                                                                     \
+    }
+
 #define declare_searchable(...)                                                                             \
     declare_search_fields(__VA_ARGS__);                                                                     \
     namespace {                                                                                             \
@@ -120,4 +146,5 @@ struct __search_struct__;
         using _search_struct = __search_struct__<Record, find_t>;                                           \
     }                                                                                                       \
     declare_find_;                                                                                          \
-    identity_(map_(declare_find_t, __VA_ARGS__));
+    identity_(map_(declare_find_t, __VA_ARGS__));                                                           \
+    declare_find_function(__VA_ARGS__)

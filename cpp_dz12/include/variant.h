@@ -7,7 +7,7 @@
 
 #define _VAR_1
 //#define _VAR_2
-//#define _VAR_3
+//define _VAR_3
 
 template <class Record>
 struct to_text;
@@ -17,7 +17,8 @@ struct to_text;
 #elif defined(_VAR_2)
 #include <variant_2.h>
 #elif defined(_VAR_3)
-#include <variant_3.h>
+#include <variant_3.h>0
+
 #endif
 
 template <class Record>

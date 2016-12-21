@@ -5,9 +5,9 @@
 #include <string>
 
 struct date {
-	uint8_t mday;
-	uint8_t mon;
-	uint16_t year;
+	int mday;
+	int mon;
+	int year;
 
 	date(uint8_t p_mday = 0, uint8_t p_mon = 1, uint16_t p_year = 0);
 	date(const date& p_dat);
@@ -17,6 +17,7 @@ struct date {
 	date& operator+=(uint32_t p_day);
 	date operator+(uint32_t rhs) const;
 	friend std::ostream& operator<<(std::ostream& lhs, const date& rhs);
+	friend std::wostream& operator<<(std::wostream& lhs, const date& rhs);
 	friend std::istream& operator>>(std::istream& lhs, date& rhs);
 
 private:
