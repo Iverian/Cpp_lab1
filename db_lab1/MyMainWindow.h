@@ -12,6 +12,8 @@ private slots:
     void on_pushButton_clicked();
     void on_listView_clicked(const QModelIndex &index);
 
+    void on_lineEdit_returnPressed();
+
 signals:
     void emitError(QString errMsg);
 private:
