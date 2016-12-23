@@ -42,6 +42,14 @@ private slots:
 	void deleteChoir();
 
 	void showQuery(const QString& text);
+	void on_addBut_clicked();
+
+	void on_editBut_clicked();
+
+	void on_delBut_clicked();
+
+	void on_showBut_clicked();
+
 private:
 	QSqlDatabase db();
 	QMenu* createMenu(const QList<QPair<int, QString>>& list, const char* memberSlot,

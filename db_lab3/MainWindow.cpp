@@ -369,3 +369,23 @@ T getFirstQueryVal(const QString& text, const QSqlDatabase& db, bool* const stat
 	q.finish();
 	return retval;
 }
+
+void MainWindow::on_addBut_clicked()
+{
+	on_addBut_customContextMenuRequested(ui->addBut->pos());
+}
+
+void MainWindow::on_editBut_clicked()
+{
+	on_editBut_customContextMenuRequested(ui->addBut->pos());
+}
+
+void MainWindow::on_delBut_clicked()
+{
+	on_delBut_customContextMenuRequested(ui->addBut->pos());
+}
+
+void MainWindow::on_showBut_clicked()
+{
+	on_showBut_customContextMenuRequested(ui->addBut->pos());
+}

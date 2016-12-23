@@ -3,11 +3,14 @@
 #include <QApplication>
 #include <QErrorMessage>
 #include <QSqlDatabase>
+#include <windows.h>
 
 void initDatabase();
 
 int main(int argc, char* argv[])
 {
+	SetConsoleCP(CP_UTF8);
+	SetConsoleOutputCP(CP_UTF8);
 	QApplication a(argc, argv);
 	MainWindow w;
 	QErrorMessage e;
