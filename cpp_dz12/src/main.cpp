@@ -17,7 +17,7 @@ ostream& print(const vector<id_type>& cont, database& db, ostream& os = cout);
 
 int main()
 {
-    database db("db");
+    database db(names[0]);
     cout << help_msg << endl;
     for (int a; cout << "> ", cin >> a;)
         switch (actions(a)) {
@@ -54,40 +54,8 @@ int main()
             id_type id;
             cout << "enter searchable id between 0 and " << size_(names) << endl;
             cin >> id;
-            switch (id) {
-            case 0: {
-                linked_type<0> x;
-                cin >> x;
-                print(db.find<0>(x, "last_find.txt"), db) << endl;
-                break;
-            }
-            case 1: {
-                linked_type<1> x;
-                cin >> x;
-                print(db.find<1>(x, "last_find.txt"), db) << endl;
-                break;
-            }
-            case 2: {
-                linked_type<2> x;
-                cin >> x;
-                print(db.find<2>(x, "last_find.txt"), db) << endl;
-                break;
-            }
-            case 3: {
-                linked_type<3> x;
-                cin >> x;
-                print(db.find<3>(x, "last_find.txt"), db) << endl;
-                break;
-            }
-            case 4: {
-                linked_type<4> x;
-                cin >> x;
-                print(db.find<4>(x, "last_find.txt"), db) << endl;
-                break;
-            }
-            default:
-                break;
-            }
+            cout << "enter value of type '" << names[id] << "' :" << endl;
+            print(find_in_db_(db, id), db) << endl;
             break;
         }
         case SUMMARY: {
