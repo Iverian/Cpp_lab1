@@ -1,0 +1,254 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="windowModality">
+   <enum>Qt::WindowModal</enum>
+  </property>
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>355</width>
+    <height>45</height>
+   </rect>
+  </property>
+  <property name="sizePolicy">
+   <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+    <horstretch>0</horstretch>
+    <verstretch>0</verstretch>
+   </sizepolicy>
+  </property>
+  <property name="maximumSize">
+   <size>
+    <width>520</width>
+    <height>45</height>
+   </size>
+  </property>
+  <property name="windowTitle">
+   <string/>
+  </property>
+  <widget class="QWidget" name="centralWidget">
+   <property name="sizePolicy">
+    <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+     <horstretch>0</horstretch>
+     <verstretch>0</verstretch>
+    </sizepolicy>
+   </property>
+   <layout class="QHBoxLayout" name="horizontalLayout">
+    <property name="sizeConstraint">
+     <enum>QLayout::SetFixedSize</enum>
+    </property>
+    <item>
+     <widget class="QToolButton" name="addBut">
+      <property name="contextMenuPolicy">
+       <enum>Qt::CustomContextMenu</enum>
+      </property>
+      <property name="text">
+       <string>ADD</string>
+      </property>
+      <property name="popupMode">
+       <enum>QToolButton::DelayedPopup</enum>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <spacer name="horizontalSpacer_2">
+      <property name="orientation">
+       <enum>Qt::Horizontal</enum>
+      </property>
+      <property name="sizeHint" stdset="0">
+       <size>
+        <width>40</width>
+        <height>20</height>
+       </size>
+      </property>
+     </spacer>
+    </item>
+    <item>
+     <spacer name="horizontalSpacer">
+      <property name="orientation">
+       <enum>Qt::Horizontal</enum>
+      </property>
+      <property name="sizeHint" stdset="0">
+       <size>
+        <width>40</width>
+        <height>20</height>
+       </size>
+      </property>
+     </spacer>
+    </item>
+    <item>
+     <widget class="QToolButton" name="editBut">
+      <property name="contextMenuPolicy">
+       <enum>Qt::CustomContextMenu</enum>
+      </property>
+      <property name="text">
+       <string>EDIT</string>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <spacer name="horizontalSpacer_4">
+      <property name="orientation">
+       <enum>Qt::Horizontal</enum>
+      </property>
+      <property name="sizeHint" stdset="0">
+       <size>
+        <width>40</width>
+        <height>20</height>
+       </size>
+      </property>
+     </spacer>
+    </item>
+    <item>
+     <spacer name="horizontalSpacer_3">
+      <property name="orientation">
+       <enum>Qt::Horizontal</enum>
+      </property>
+      <property name="sizeHint" stdset="0">
+       <size>
+        <width>40</width>
+        <height>20</height>
+       </size>
+      </property>
+     </spacer>
+    </item>
+    <item>
+     <widget class="QToolButton" name="delBut">
+      <property name="contextMenuPolicy">
+       <enum>Qt::CustomContextMenu</enum>
+      </property>
+      <property name="text">
+       <string>DELETE</string>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <spacer name="horizontalSpacer_6">
+      <property name="orientation">
+       <enum>Qt::Horizontal</enum>
+      </property>
+      <property name="sizeHint" stdset="0">
+       <size>
+        <width>40</width>
+        <height>20</height>
+       </size>
+      </property>
+     </spacer>
+    </item>
+    <item>
+     <spacer name="horizontalSpacer_5">
+      <property name="orientation">
+       <enum>Qt::Horizontal</enum>
+      </property>
+      <property name="sizeHint" stdset="0">
+       <size>
+        <width>40</width>
+        <height>20</height>
+       </size>
+      </property>
+     </spacer>
+    </item>
+    <item>
+     <widget class="QToolButton" name="showBut">
+      <property name="contextMenuPolicy">
+       <enum>Qt::CustomContextMenu</enum>
+      </property>
+      <property name="text">
+       <string>SHOW</string>
+      </property>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+  <action name="showMemberList">
+   <property name="text">
+    <string>Member list</string>
+   </property>
+   <property name="toolTip">
+    <string>Member list</string>
+   </property>
+  </action>
+  <action name="showChoirRating">
+   <property name="text">
+    <string>Choir rating</string>
+   </property>
+   <property name="toolTip">
+    <string>Choir rating</string>
+   </property>
+  </action>
+  <action name="showChoirMembers">
+   <property name="text">
+    <string>Choir members</string>
+   </property>
+   <property name="toolTip">
+    <string>Choir members</string>
+   </property>
+  </action>
+  <action name="addChoir">
+   <property name="text">
+    <string>Choir</string>
+   </property>
+   <property name="toolTip">
+    <string>Choir</string>
+   </property>
+  </action>
+  <action name="addMember">
+   <property name="text">
+    <string>Member</string>
+   </property>
+   <property name="toolTip">
+    <string>Member</string>
+   </property>
+  </action>
+  <action name="showChoirs">
+   <property name="text">
+    <string>Choirs</string>
+   </property>
+   <property name="toolTip">
+    <string>Choirs</string>
+   </property>
+  </action>
+  <action name="showTopMember">
+   <property name="text">
+    <string>Top member</string>
+   </property>
+   <property name="toolTip">
+    <string>Top member</string>
+   </property>
+  </action>
+  <action name="showTopChoir">
+   <property name="text">
+    <string>Top choir</string>
+   </property>
+   <property name="toolTip">
+    <string>Top choir</string>
+   </property>
+  </action>
+  <action name="showMemberRating">
+   <property name="text">
+    <string>Member rating</string>
+   </property>
+   <property name="toolTip">
+    <string>Member rating</string>
+   </property>
+  </action>
+  <action name="showLoserChoir">
+   <property name="text">
+    <string>Loser choir</string>
+   </property>
+  </action>
+  <action name="showLoserMember">
+   <property name="text">
+    <string>Loser Member</string>
+   </property>
+   <property name="toolTip">
+    <string>Loser Member</string>
+   </property>
+  </action>
+ </widget>
+ <layoutdefault spacing="6" margin="11"/>
+ <resources/>
+ <connections/>
+</ui>

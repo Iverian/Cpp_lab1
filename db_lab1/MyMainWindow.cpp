@@ -50,8 +50,3 @@ void MyMainWindow::on_listView_clicked(const QModelIndex &index)
     model->setQuery("select * from " + index.data().toString(), db);
     ui.tableView->setModel(model);
 }
-
-void MyMainWindow::on_lineEdit_returnPressed()
-{
-    on_pushButton_clicked();
-}

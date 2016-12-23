@@ -23,6 +23,12 @@ private slots:
 	void on_tableList_clicked(const QModelIndex&);
 	void on_sendButton_clicked();
 
+	void on_pushButton_3_clicked();
+
+	void on_pushButton_clicked();
+
+	void on_pushButton_2_clicked();
+
 private:
 	QSqlDatabase activeDatabase();
 	QString activeTable();

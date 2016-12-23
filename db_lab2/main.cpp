@@ -12,6 +12,7 @@ int main(int argc, char *argv[])
 
 	DoraTheExplorer w;
 	QErrorMessage e;
+	e.setModal(true);
 	QObject::connect(&w, SIGNAL(emitError(QString)), &e, SLOT(showMessage(QString)));
 	w.show();
 

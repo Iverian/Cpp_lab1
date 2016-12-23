@@ -141,17 +141,25 @@ def_cont<set<id_type>> mesh::get_cont_neighs()
     return move(retval);
 }
 
+bool operator==(const helper::node& lhs, const helper::node& rhs) {return lhs.type == rhs.type && equal(lhs.coord, rhs.coord);}
+
 mesh& mesh::convert_to_square_type()
 {
     auto cur_id = m_node_cont.back().id + 1;
-    def_cont<helper::node> new_nodes;
+    set<helper::node> new_nodes;
     for (auto i = m_fe_cont.begin(); i != m_fe_cont.end(); ++i) {
         for (auto j = i->nodes.begin(); j != i->nodes.end(); ++j) {
-            for (auto k = j + 1; k != i->nodes.end(); ++k) {
-                auto center = get_center(node(*j).coord, node(*k).coord);
-                if (find_if(new_nodes.begin(), new_nodes.end(), [&center](const helper::node& x) { return equal(x.coord, center); }) == new_nodes.end())
-                    new_nodes.push_back({ cur_id++, INTERIOR, center });
+            vector<id_type> to_insert;
+            for (auto k = next(j); k != i->nodes.end(); ++k) {
+                helper::node center_node = {0, INTERIOR, get_center(node(*j).coord, node(*k).coord)};
+                if (new_nodes.find(center_node) != new_nodes.end()) {
+                	center_node.id = cur_id++;
+                	new_nodes.insert(center_node);
+                	to_insert.insert(center_node.id);
+                }
             }
+            for (const auto& i : to_insert)
+            	i->nodes.push_back(i);
         }
     }
 	for (auto& i : new_nodes)

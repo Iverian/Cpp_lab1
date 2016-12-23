@@ -128,3 +128,57 @@ void DoraTheExplorer::refreshTableView()
 		ui->tableName->setText("NO TABLE");
 	}
 }
+
+void DoraTheExplorer::on_pushButton_3_clicked()
+{
+	auto query = activeDatabase().exec("with member_rating as(select x.id_member, y.rating from choir_members as x, competitions as y where x.id_choir=y.id_choir ), member_max as ( select id_member from member_rating group by id_member having sum(rating) >= all(select sum(rating) from member_rating group by id_member) )select name from members where id in (select id_member from member_max);");
+	auto error = query.lastError();
+	if (error.type() != QSqlError::NoError)
+		emit emitError(error.text());
+	else {
+		if (query.isSelect()) {
+			auto model = new QSqlQueryModel;
+			model->setQuery(query);
+			ui->tableList->setCurrentIndex(ui->tableList->model()->index(-1, 0));
+			ui->tableView->setModel(model);
+			ui->tableName->setText("SELECT");
+		} else
+			refreshTableList(false);
+	}
+}
+
+void DoraTheExplorer::on_pushButton_clicked()
+{
+	auto query = activeDatabase().exec("with member_rating as(select x.id_member, y.rating from choir_members as x, competitions as y where x.id_choir=y.id_choir ), member_min as ( select id_member from member_rating group by id_member having sum(rating) <= all(select sum(rating) from member_rating group by id_member) )select name from members where id in (select id_member from member_min);");
+	auto error = query.lastError();
+	if (error.type() != QSqlError::NoError)
+		emit emitError(error.text());
+	else {
+		if (query.isSelect()) {
+			auto model = new QSqlQueryModel;
+			model->setQuery(query);
+			ui->tableList->setCurrentIndex(ui->tableList->model()->index(-1, 0));
+			ui->tableView->setModel(model);
+			ui->tableName->setText("SELECT");
+		} else
+			refreshTableList(false);
+	}
+}
+
+void DoraTheExplorer::on_pushButton_2_clicked()
+{
+	auto query = activeDatabase().exec("with member_rating as(select x.id_member, y.rating from choir_members as x, competitions as y where x.id_choir=y.id_choir) select id_member, sum(rating) from member_rating group by id_member order by id_member asc;");
+	auto error = query.lastError();
+	if (error.type() != QSqlError::NoError)
+		emit emitError(error.text());
+	else {
+		if (query.isSelect()) {
+			auto model = new QSqlQueryModel;
+			model->setQuery(query);
+			ui->tableList->setCurrentIndex(ui->tableList->model()->index(-1, 0));
+			ui->tableView->setModel(model);
+			ui->tableName->setText("SELECT");
+		} else
+			refreshTableList(false);
+	}
+}
