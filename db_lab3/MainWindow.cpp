@@ -15,14 +15,11 @@ using namespace std;
 template <class T>
 T getFirstQueryVal(const QString& text,
 	const QSqlDatabase& db = QSqlDatabase::database(), bool* const status = nullptr);
-
 template <class T>
 QSet<T> getSetQueryVals(const QString& text,
 	const QSqlDatabase& db = QSqlDatabase::database(), bool* const status = nullptr);
-
 void popupMenu(const QPoint& pos, QWidget* viewport,
 	const initializer_list<QAction*>& actList, QWidget* const parent = 0);
-
 void popupMenu(const QPoint& pos, QWidget* viewport,
 	const initializer_list<QMenu*>& actList, QWidget* const parent = 0);
 
@@ -37,6 +34,13 @@ MainWindow::MainWindow(QWidget* parent)
 void MainWindow::on_showMemberList_triggered()
 {
 	showQuery("SELECT Name FROM Members;");
+	/*  "with member_rating as(select x.id_member, y.rating from choir_members as "
+				  "x, competitions as y where x.id_choir=y.id_choir),member_sum as
+	   (select"
+					"id_member, sum(rating) as s from member_rating group by id_member
+	   order"
+					"by id_member asc) select y.id_member, y.s from member_rating as y"
+					" order by y.s desc;");*/
 }
 
 void MainWindow::on_showChoirRating_triggered()
@@ -72,7 +76,11 @@ void MainWindow::on_showChoirMembers_triggered()
 	}
 }
 
-void MainWindow::on_showChoirs_triggered() { showQuery("SELECT Name FROM Choirs;"); }
+void MainWindow::on_showChoirs_triggered()
+{
+	showQuery("SELECT x.Name, y.rating FROM Choirs as x, competitions as y where "
+			  "(x.id=y.id_choir) order by y.rating desc;");
+}
 
 void MainWindow::on_showTopMember_triggered()
 {
@@ -93,11 +101,24 @@ void MainWindow::on_showTopChoir_triggered()
 
 void MainWindow::on_showMemberRating_triggered()
 {
-	showQuery("with member_rating as(select x.id_member, y.rating from choir_members as "
-			  "x, competitions as y where x.id_choir=y.id_choir),member_sum as (select "
-			  "id_member, sum(rating) as s from member_rating group by id_member order "
-			  "by id_member asc) select x.name, y.s from member_sum as y, members as x "
-			  "where x.id=y.id_member order by y.s desc;");
+	auto choir = Useless::get(toList(getMembers()), this);
+	if (!choir.isEmpty()) {
+		auto isCorrect = getFirstQueryVal<bool>(
+			tr("SELECT COUNT(*)<>0 FROM Members WHERE Name='%1'").arg(choir));
+		if (!isCorrect)
+			emit error(tr("Unexpected member name: %1").arg(choir));
+		else
+			showQuery(tr("with member_rating as(select x.id_member, y.rating from "
+						 "choir_members as "
+						 "x, competitions as y where x.id_choir=y.id_choir),member_sum "
+						 "as (select "
+						 "id_member, sum(rating) as s from member_rating group by "
+						 "id_member order "
+						 "by id_member asc) select x.name, y.s from member_sum as y, "
+						 "members as x "
+						 "where x.name='%1' and x.id=y.id_member")
+						  .arg(choir));
+	}
 }
 
 void MainWindow::on_showLoserChoir_triggered()
@@ -149,24 +170,6 @@ void MainWindow::on_editBut_customContextMenuRequested(const QPoint& pos)
 	auto choir = createMenu(getChoirs(), SLOT(editChoir()), this);
 	choir->setTitle("Choirs");
 	popupMenu(pos, ui->editBut, {member, choir}, this);
-}
-
-void popupMenu(const QPoint& pos, QWidget* viewport,
-	const initializer_list<QAction*>& actList, QWidget* const parent)
-{
-	auto menu = new QMenu(parent);
-	for (auto& i : actList)
-		menu->addAction(i);
-	menu->popup(viewport->mapToGlobal(pos));
-}
-
-void popupMenu(const QPoint& pos, QWidget* viewport,
-	const initializer_list<QMenu*>& actList, QWidget* const parent)
-{
-	auto menu = new QMenu(parent);
-	for (auto& i : actList)
-		menu->addMenu(i);
-	menu->popup(viewport->mapToGlobal(pos));
 }
 
 void MainWindow::on_addMember_triggered()
@@ -299,8 +302,9 @@ void MainWindow::editChoir()
 			db().exec(insertStr);
 		}
 		if (rating != -1) {
-			db().exec(
-				tr("UPDATE Competitions SET Rating=%1 WHERE %2;").arg(rating).arg(id));
+			db().exec(tr("UPDATE Competitions SET Rating=%1 WHERE id_choir=%2;")
+						  .arg(rating)
+						  .arg(id));
 		}
 	}
 }
@@ -388,4 +392,22 @@ void MainWindow::on_delBut_clicked()
 void MainWindow::on_showBut_clicked()
 {
 	on_showBut_customContextMenuRequested(ui->addBut->pos());
+}
+
+void popupMenu(const QPoint& pos, QWidget* viewport,
+	const initializer_list<QAction*>& actList, QWidget* const parent)
+{
+	auto menu = new QMenu(parent);
+	for (auto& i : actList)
+		menu->addAction(i);
+	menu->popup(viewport->mapToGlobal(pos));
+}
+
+void popupMenu(const QPoint& pos, QWidget* viewport,
+	const initializer_list<QMenu*>& actList, QWidget* const parent)
+{
+	auto menu = new QMenu(parent);
+	for (auto& i : actList)
+		menu->addMenu(i);
+	menu->popup(viewport->mapToGlobal(pos));
 }
