@@ -245,8 +245,9 @@ QStringList MainWindow::toList(const QList<QPair<int, QString>>& list)
 QMap<QString, int> MainWindow::toMap(const QList<QPair<int, QString>>& list)
 {
 	QMap<QString, int> retval;
+    int j = 1;
 	for (const auto& i : list)
-		retval.insert(i.second, i.first);
+        retval.insert(tr("%1)%2").arg(j++).arg(i.second), i.first);
 	return retval;
 }
 
@@ -261,7 +262,7 @@ void MainWindow::editMember()
 	auto newData = ModifyDialog::modify(choirNames, this, qMakePair(name, choirs));
 	if (!newData.first.isEmpty()) {
 		db().exec(
-			tr("UPDATE Members SET Name=%1 WHERE Id=%2").arg(newData.first).arg(id));
+            tr("UPDATE Members SET Name='%1' WHERE Id=%2").arg(newData.first).arg(id));
 		db().exec(tr("DELETE FROM Choir_members WHERE Id_member=%1").arg(id));
 		if (!newData.second.isEmpty()) {
 			QString insertStr = "INSERT INTO Choir_members(Id_member,Id_choir) VALUES ";
@@ -290,7 +291,7 @@ void MainWindow::editChoir()
 	if (!newData.first.isEmpty()) {
 		rating = Useless::num(rating, this);
 		db().exec(
-			tr("UPDATE Choirs SET Name=%1 WHERE Id=%2").arg(newData.first).arg(id));
+            tr("UPDATE Choirs SET Name='%1' WHERE Id=%2").arg(newData.first).arg(id));
 		db().exec(tr("DELETE FROM Choir_members WHERE Id_choir=%1").arg(id));
 		if (!newData.second.isEmpty()) {
 			QString insertStr = "INSERT INTO Choir_members(Id_choir,Id_member) VALUES ";
