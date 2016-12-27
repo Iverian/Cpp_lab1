@@ -38,7 +38,7 @@ QList<QCheckBox*> ModifyDialog::setupBoxList(
 	QList<QCheckBox*> retval;
 	auto layout = new QVBoxLayout(ui->list);
 	for (auto i = listToId.cbegin(); i != listToId.cend(); ++i) {
-		auto check = new QCheckBox(tr("%1-%2").arg(i.value()).arg(i.key()));
+        auto check = new QCheckBox(i.key());
 		check->setChecked(activeId.contains(i.value()));
 		layout->addWidget(check);
 		retval.append(check);
