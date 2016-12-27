@@ -13,12 +13,12 @@ using namespace std;
 
 void echo(std::istream&& p_src, std::ostream& p_dst)
 {
-	string buf;
-	buf.reserve(BUFSIZE);
-	while (p_src) {
-		getline(p_src, buf);
-		p_dst << buf << endl;
-	}
+    string buf;
+    buf.reserve(BUFSIZE);
+    while (p_src) {
+        getline(p_src, buf);
+        p_dst << buf << endl;
+    }
 }
 
 bool user_confirm(istream& p_is, pair<char, char> p_yes_no)
@@ -42,10 +42,7 @@ point get_center(const point& x, const point& y)
 bool equal(const point& x, const point& y)
 {
     return std::equal(x.begin(), x.end(), y.begin(), y.end(),
-    		[](double a, double b)
-    {
-	    return fabs(a - b) < ACCURACY;
-    });
+        [](double a, double b) { return fabs(a - b) < ACCURACY; });
 }
 
 void print_to_file(const string& p_filename, const def_cont<id_type>& cont)
@@ -68,10 +65,25 @@ void print_to_file(const string& p_filename, const def_cont<set<id_type>>& cont)
 
 bool eol(istream& p_is)
 {
-	char c;
-	while (p_is.get(c) && !isspace(c) && c != '\n')
-		;
-	if (c != '\n')
-		p_is.putback(c);
-	return c == '\n';
+    char c;
+    while (p_is.get(c) && !isspace(c) && c != '\n')
+        ;
+    if (c != '\n')
+        p_is.putback(c);
+    return c == '\n';
+}
+
+double index(double x, double y) { return (x + y + 1) * (x + y + 2) / 2.; }
+
+double point_index(const point& x)
+{
+    auto retval = *x.crbegin();
+    for (auto i = next(x.crbegin()); i != x.crend(); ++i)
+        retval = index(*i, retval);
+    return retval;
+}
+
+bool kutirkin_tech(const point& lhs, const point& rhs)
+{
+    return point_index(lhs) < point_index(rhs);
 }

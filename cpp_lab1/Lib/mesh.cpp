@@ -2,6 +2,7 @@
 #include "utility.h"
 
 #include <algorithm>
+#include <unordered_set>
 
 using namespace std;
 using namespace helper;
@@ -143,13 +144,16 @@ def_cont<set<id_type>> mesh::get_cont_neighs()
 
 bool operator==(const helper::node& lhs, const helper::node& rhs) {return lhs.type == rhs.type && equal(lhs.coord, rhs.coord);}
 
+struct backbone {
+	bool operator()(const helper::node lhs, const helper::node rhs) const { return kutirkin_tech(lhs.coord, rhs.coord); }
+};
 mesh& mesh::convert_to_square_type()
 {
     auto cur_id = m_node_cont.back().id + 1;
-    set<helper::node> new_nodes;
+    set<helper::node, backbone> new_nodes;
     for (auto i = m_fe_cont.begin(); i != m_fe_cont.end(); ++i) {
         for (auto j = i->nodes.begin(); j != i->nodes.end(); ++j) {
-            vector<id_type> to_insert;
+            set<id_type> to_insert;
             for (auto k = next(j); k != i->nodes.end(); ++k) {
                 helper::node center_node = {0, INTERIOR, get_center(node(*j).coord, node(*k).coord)};
                 if (new_nodes.find(center_node) != new_nodes.end()) {
@@ -158,8 +162,8 @@ mesh& mesh::convert_to_square_type()
                 	to_insert.insert(center_node.id);
                 }
             }
-            for (const auto& i : to_insert)
-            	i->nodes.push_back(i);
+            for (const auto& k : to_insert)
+            	i->nodes.push_back(k);
         }
     }
 	for (auto& i : new_nodes)
