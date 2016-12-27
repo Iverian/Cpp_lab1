@@ -268,16 +268,16 @@ void Calculator::setupLayout()
 
 	auto selector = new QButtonGroup(this);
 	auto normalModeButton = new QRadioButton(str::normalMode);
-	auto engineerModeButton = new QRadioButton(str::engineerMode);
+    auto engineerModeButton = new QRadioButton(str::engineerMode);
 	selector->addButton(normalModeButton, (int)mode::NORMAL);
-	selector->addButton(engineerModeButton, (int)mode::ENGINEER);
+    selector->addButton(engineerModeButton, (int)mode::ENGINEER);
 	normalModeButton->click();
 	connect(selector, SIGNAL(buttonClicked(int)), this, SLOT(changeMode(int)));
 
 	buttonBox = new QGroupBox;
 	auto radioButtonLayout = new QVBoxLayout;
 	radioButtonLayout->addWidget(normalModeButton);
-	radioButtonLayout->addWidget(engineerModeButton);
+    radioButtonLayout->addWidget(engineerModeButton);
 	buttonBox->setLayout(radioButtonLayout);
 
 	clearButton = createButton((int)token::CLEAR, SLOT(clear()));
@@ -393,7 +393,7 @@ Button* Calculator::createButton(int id, const char* slot)
 QString Calculator::windowTitle(mode id) const
 {
 	return QString("%1(%2)").arg(
-		str::windowTitle, id == mode::NORMAL ? str::normalMode : str::engineerMode);
+        str::windowTitle, id == mode::NORMAL ? str::normalMode : str::engineerMode);
 }
 
 QSize QLCDKostil::sizeHint() const
