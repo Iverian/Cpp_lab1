@@ -41,7 +41,7 @@ point get_center(const point& x, const point& y)
 
 bool equal(const point& x, const point& y)
 {
-    return std::equal(x.begin(), x.end(), y.begin(), y.end(),
+    return std::equal(x.begin(), x.end(), y.begin(),
         [](double a, double b) { return fabs(a - b) < ACCURACY; });
 }
 
