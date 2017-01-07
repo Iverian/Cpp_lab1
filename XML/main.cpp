@@ -6,8 +6,8 @@
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
-    QFile Doc("../rest.xml");
-    QFile xqfile("../_kermit.xq");
+    QFile Doc("rest.xml");
+    QFile xqfile("_kermit.xq");
     Doc.open(QIODevice::ReadOnly);
     xqfile.open(QIODevice::ReadOnly);
     QString strquery = xqfile.readAll();
